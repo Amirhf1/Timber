@@ -30,7 +30,6 @@ import android.widget.TextView;
 import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.dialogs.AddPlaylistDialog;
 import com.naman14.timber.models.Song;
 import com.naman14.timber.utils.Helpers;
 import com.naman14.timber.utils.NavigationUtils;
@@ -110,12 +109,6 @@ public class PlayingQueueAdapter extends RecyclerView.Adapter<PlayingQueueAdapte
                                 break;
                             case R.id.popup_song_goto_album:
                                 NavigationUtils.goToAlbum(mContext, arraylist.get(position).albumId);
-                                break;
-                            case R.id.popup_song_goto_artist:
-                                NavigationUtils.goToArtist(mContext, arraylist.get(position).artistId);
-                                break;
-                            case R.id.popup_song_addto_playlist:
-                                AddPlaylistDialog.newInstance(arraylist.get(position)).show(((AppCompatActivity) mContext).getSupportFragmentManager(), "ADD_PLAYLIST");
                                 break;
                         }
                         return false;

@@ -18,7 +18,6 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,11 +31,9 @@ import android.widget.TextView;
 import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.dialogs.AddPlaylistDialog;
 import com.naman14.timber.models.Song;
 import com.naman14.timber.utils.Helpers;
 import com.naman14.timber.utils.NavigationUtils;
-import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.BubbleTextGetter;
 import com.naman14.timber.widgets.MusicVisualizer;
@@ -160,16 +157,10 @@ public class SongsListAdapter extends BaseSongAdapter<SongsListAdapter.ItemHolde
                             case R.id.popup_song_goto_album:
                                 NavigationUtils.goToAlbum(mContext, arraylist.get(position).albumId);
                                 break;
-                            case R.id.popup_song_goto_artist:
-                                NavigationUtils.goToArtist(mContext, arraylist.get(position).artistId);
-                                break;
                             case R.id.popup_song_addto_queue:
                                 long[] id = new long[1];
                                 id[0] = arraylist.get(position).id;
                                 MusicPlayer.addToQueue(mContext, id, -1, TimberUtils.IdType.NA);
-                                break;
-                            case R.id.popup_song_addto_playlist:
-                                AddPlaylistDialog.newInstance(arraylist.get(position)).show(mContext.getSupportFragmentManager(), "ADD_PLAYLIST");
                                 break;
                             case R.id.popup_song_share:
                                TimberUtils.shareTrack(mContext, arraylist.get(position).id);

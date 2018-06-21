@@ -251,12 +251,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
             case R.id.menu_go_to_album:
                 NavigationUtils.goToAlbum(getContext(), MusicPlayer.getCurrentAlbumId());
                 break;
-            case R.id.menu_go_to_artist:
-                NavigationUtils.goToArtist(getContext(), MusicPlayer.getCurrentArtistId());
-                break;
-            case R.id.action_lyrics:
-                NavigationUtils.goToLyrics(getContext());
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -560,12 +554,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
             }
             if (songartist != null) {
                 songartist.setText(MusicPlayer.getArtistName());
-                songartist.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        NavigationUtils.goToArtist(getContext(), MusicPlayer.getCurrentArtistId());
-                    }
-                });
             }
             if (songalbum != null)
                 songalbum.setText(MusicPlayer.getAlbumName());
