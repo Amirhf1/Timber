@@ -41,7 +41,6 @@ import java.util.List;
 public class MainFragment extends Fragment {
 
     private PreferencesUtility mPreferences;
-    private ViewPager viewPager;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -55,10 +54,11 @@ public class MainFragment extends Fragment {
                 R.layout.fragment_main, container, false);
 
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         if (viewPager != null) {
-            setupViewPager(viewPager);
-            viewPager.setOffscreenPageLimit(2);
+            Adapter adapter = new Adapter(getChildFragmentManager());
+            adapter.addFragment(new SongsFragment(), this.getString(R.string.songs));
+            viewPager.setAdapter(adapter);
         }
 
         return rootView;
@@ -66,46 +66,14 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("dark_theme", false)) {
-            ATE.apply(this, "dark_theme");
-        } else {
-            ATE.apply(this, "light_theme");
-        }
-        viewPager.setCurrentItem(mPreferences.getStartPageIndex());
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new SongsFragment(), this.getString(R.string.songs));
-        viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mPreferences.lastOpenedIsStartPagePreference()) {
-            mPreferences.setStartPageIndex(viewPager.getCurrentItem());
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         String ateKey = Helpers.getATEKey(getActivity());
         ATEUtils.setStatusBarColor(getActivity(), ateKey, Config.primaryColor(getActivity(), ateKey));
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
 
         public Adapter(FragmentManager fm) {
             super(fm);
@@ -113,7 +81,6 @@ public class MainFragment extends Fragment {
 
         public void addFragment(Fragment fragment, String title) {
             mFragments.add(fragment);
-            mFragmentTitles.add(title);
         }
 
         @Override
@@ -124,11 +91,6 @@ public class MainFragment extends Fragment {
         @Override
         public int getCount() {
             return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitles.get(position);
         }
     }
 }

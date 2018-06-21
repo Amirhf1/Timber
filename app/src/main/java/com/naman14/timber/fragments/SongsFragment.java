@@ -45,13 +45,6 @@ public class SongsFragment extends Fragment implements MusicStateListener {
 
     private SongsListAdapter mAdapter;
     private BaseRecyclerView recyclerView;
-    private PreferencesUtility mPreferences;
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPreferences = PreferencesUtility.getInstance(getActivity());
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,65 +74,6 @@ public class SongsFragment extends Fragment implements MusicStateListener {
     public void onMetaChanged() {
         if (mAdapter != null)
             mAdapter.notifyDataSetChanged();
-    }
-
-    private void reloadAdapter() {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(final Void... unused) {
-                List<Song> songList = SongLoader.getAllSongs(getActivity());
-                mAdapter.updateDataSet(songList);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                mAdapter.notifyDataSetChanged();
-            }
-        }.execute();
-    }
-
-    @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.song_sort_by, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_sort_by_az:
-                mPreferences.setSongSortOrder(SortOrder.SongSortOrder.SONG_A_Z);
-                reloadAdapter();
-                return true;
-            case R.id.menu_sort_by_za:
-                mPreferences.setSongSortOrder(SortOrder.SongSortOrder.SONG_Z_A);
-                reloadAdapter();
-                return true;
-            case R.id.menu_sort_by_artist:
-                mPreferences.setSongSortOrder(SortOrder.SongSortOrder.SONG_ARTIST);
-                reloadAdapter();
-                return true;
-            case R.id.menu_sort_by_album:
-                mPreferences.setSongSortOrder(SortOrder.SongSortOrder.SONG_ALBUM);
-                reloadAdapter();
-                return true;
-            case R.id.menu_sort_by_year:
-                mPreferences.setSongSortOrder(SortOrder.SongSortOrder.SONG_YEAR);
-                reloadAdapter();
-                return true;
-            case R.id.menu_sort_by_duration:
-                mPreferences.setSongSortOrder(SortOrder.SongSortOrder.SONG_DURATION);
-                reloadAdapter();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private class loadSongs extends AsyncTask<String, Void, String> {

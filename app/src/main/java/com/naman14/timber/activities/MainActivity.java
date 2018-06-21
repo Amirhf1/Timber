@@ -36,7 +36,6 @@ import com.afollestad.appthemeengine.customizers.ATEActivityThemeCustomizer;
 import com.google.android.gms.cast.framework.media.widget.ExpandedControllerActivity;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.fragments.FoldersFragment;
 import com.naman14.timber.fragments.MainFragment;
 import com.naman14.timber.permissions.Nammu;
 import com.naman14.timber.permissions.PermissionCallback;
@@ -47,7 +46,7 @@ import com.naman14.timber.utils.TimberUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends BaseActivity implements ATEActivityThemeCustomizer {
+public class MainActivity extends BaseActivity {
 
     private SlidingUpPanelLayout panelLayout;
     private String action;
@@ -226,12 +225,6 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
                 getSupportFragmentManager().findFragmentById(R.id.fragment_container).onResume();
             }
         });
-    }
-
-
-    @Override
-    public int getActivityTheme() {
-        return R.style.AppThemeNormalLight;
     }
 
     @Override

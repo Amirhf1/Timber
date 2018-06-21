@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.service.media.MediaBrowserService;
 import android.support.annotation.Nullable;
 
-import com.naman14.timber.dataloaders.PlaylistSongLoader;
 import com.naman14.timber.dataloaders.SongLoader;
 import com.naman14.timber.models.Song;
 import com.naman14.timber.utils.TimberUtils;
@@ -234,13 +233,6 @@ public class WearBrowserService extends MediaBrowserService {
                                 fillMediaItems(mediaItems, String.valueOf(song.id), song.title, TimberUtils.getAlbumArtUri(song.albumId), song.artistName, MediaBrowser.MediaItem.FLAG_PLAYABLE);
                             }
                             break;
-                        case TYPE_PLAYLIST_ALL_SONGS:
-                            List<Song> playlistSongs = PlaylistSongLoader.getSongsInPlaylist(mContext, Long.parseLong(parentId.substring(1)));
-                            for (Song song : playlistSongs) {
-                                fillMediaItems(mediaItems, String.valueOf(song.id), song.title, TimberUtils.getAlbumArtUri(song.albumId), song.albumName, MediaBrowser.MediaItem.FLAG_PLAYABLE);
-                            }
-                            break;
-
                     }
                 }
                 return null;

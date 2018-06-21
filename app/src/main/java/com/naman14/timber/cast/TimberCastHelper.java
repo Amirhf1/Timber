@@ -20,6 +20,7 @@ import java.net.URL;
  * Created by naman on 2/12/17.
  */
 
+@SuppressWarnings("unused")
 public class TimberCastHelper  {
 
     public static void startCasting(CastSession castSession, Song song) {
