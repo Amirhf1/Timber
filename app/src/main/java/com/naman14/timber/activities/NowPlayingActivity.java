@@ -27,8 +27,8 @@ public class NowPlayingActivity extends BaseActivity implements ATEActivityTheme
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nowplaying);
-        SharedPreferences prefs = getSharedPreferences(Constants.FRAGMENT_ID, Context.MODE_PRIVATE);
-        String fragmentID = prefs.getString(Constants.NOWPLAYING_FRAGMENT_ID, Constants.TIMBER3);
+
+        final String fragmentID = Constants.TIMBER6;
 
         Fragment fragment = NavigationUtils.getFragmentForNowplayingID(fragmentID);
         FragmentManager fragmentManager = getSupportFragmentManager();

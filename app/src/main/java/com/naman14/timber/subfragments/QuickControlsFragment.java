@@ -210,6 +210,8 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
             }
         });
 
+        previous.setVisibility(View.GONE);
+        next.setVisibility(View.GONE);
 
         ((BaseActivity) getActivity()).setMusicStateListenerListener(this);
 

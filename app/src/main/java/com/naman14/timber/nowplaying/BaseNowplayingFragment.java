@@ -94,7 +94,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     private Handler mElapsedTimeHandler;
     private boolean duetoplaypause = false;
 
-    public ImageView albumart, shuffle, repeat;
+    public ImageView albumart;
     public int accentColor;
     public RecyclerView recyclerView;
 
@@ -234,28 +234,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.now_playing, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_go_to_album:
-                NavigationUtils.goToAlbum(getContext(), MusicPlayer.getCurrentAlbumId());
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         fragmentPaused = true;
@@ -275,12 +253,10 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     public void setSongDetails(View view) {
 
         albumart = (ImageView) view.findViewById(R.id.album_art);
-        shuffle = (ImageView) view.findViewById(R.id.shuffle);
-        repeat = (ImageView) view.findViewById(R.id.repeat);
         next = (MaterialIconView) view.findViewById(R.id.next);
         previous = (MaterialIconView) view.findViewById(R.id.previous);
         mPlayPause = (PlayPauseButton) view.findViewById(R.id.playpause);
-        playPauseFloating = (FloatingActionButton) view.findViewById(R.id.playpausefloating);
+//        playPauseFloating = (FloatingActionButton) view.findViewById(R.id.playpausefloating);
         playPauseWrapper = view.findViewById(R.id.playpausewrapper);
 
         songtitle = (TextView) view.findViewById(R.id.song_title);
@@ -297,13 +273,13 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         hourColon = (TextView) view.findViewById(R.id.hour_colon);
 
         mProgress = (SeekBar) view.findViewById(R.id.song_progress);
-        mCircularProgress = (CircularSeekBar) view.findViewById(R.id.song_progress_circular);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.queue_recyclerview);
+        //mCircularProgress = (CircularSeekBar) view.findViewById(R.id.song_progress_circular);
+
+        //recyclerView = (RecyclerView) view.findViewById(R.id.queue_recyclerview);
 
 
         songtitle.setSelected(true);
-
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -381,6 +357,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         setSeekBarListener();
 
         if (next != null) {
+            next.setVisibility(View.GONE);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -397,6 +374,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
             });
         }
         if (previous != null) {
+            previous.setVisibility(View.GONE);
             previous.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -419,63 +397,8 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         if (playPauseFloating != null)
             playPauseFloating.setOnClickListener(mFLoatingButtonListener);
 
-        updateShuffleState();
-        updateRepeatState();
-
     }
 
-    public void updateShuffleState() {
-        if (shuffle != null && getActivity() != null) {
-            MaterialDrawableBuilder builder = MaterialDrawableBuilder.with(getActivity())
-                    .setIcon(MaterialDrawableBuilder.IconValue.SHUFFLE)
-                    .setSizeDp(30);
-
-            if (getActivity() != null) {
-                if (MusicPlayer.getShuffleMode() == 0) {
-                    builder.setColor(Config.textColorPrimary(getActivity(), ateKey));
-                } else builder.setColor(Config.accentColor(getActivity(), ateKey));
-            }
-
-            shuffle.setImageDrawable(builder.build());
-            shuffle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MusicPlayer.cycleShuffle();
-                    updateShuffleState();
-                    updateRepeatState();
-                }
-            });
-        }
-    }
-
-    public void updateRepeatState() {
-        if (repeat != null && getActivity() != null) {
-            MaterialDrawableBuilder builder = MaterialDrawableBuilder.with(getActivity())
-                    .setSizeDp(30);
-
-                if (MusicPlayer.getRepeatMode() == MusicService.REPEAT_NONE) {
-                    builder.setIcon(MaterialDrawableBuilder.IconValue.REPEAT);
-                    builder.setColor(Config.textColorPrimary(getActivity(), ateKey));
-                } else if (MusicPlayer.getRepeatMode() == MusicService.REPEAT_CURRENT) {
-                    builder.setIcon(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
-                    builder.setColor(Config.accentColor(getActivity(), ateKey));
-                } else if (MusicPlayer.getRepeatMode() == MusicService.REPEAT_ALL) {
-                    builder.setColor(Config.accentColor(getActivity(), ateKey));
-                    builder.setIcon(MaterialDrawableBuilder.IconValue.REPEAT);
-                }
-
-
-            repeat.setImageDrawable(builder.build());
-            repeat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MusicPlayer.cycleRepeat();
-                    updateRepeatState();
-                    updateShuffleState();
-                }
-            });
-        }
-    }
 
     private void setSeekBarListener() {
         if (mProgress != null)
@@ -702,12 +625,14 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
     protected void initGestures(View v) {
         if (PreferencesUtility.getInstance(v.getContext()).isGesturesEnabled()) {
+            /*
             new SlideTrackSwitcher() {
                 @Override
                 public void onSwipeBottom() {
                     getActivity().finish();
                 }
             }.attach(v);
+            */
         }
     }
 
