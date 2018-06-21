@@ -96,7 +96,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
     public ImageView albumart;
     public int accentColor;
-    public RecyclerView recyclerView;
 
     //seekbar
     public Runnable mUpdateProgress = new Runnable() {
@@ -192,8 +191,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
                 @Override
                 public void run() {
                     MusicPlayer.playOrPause();
-                    if (recyclerView != null && recyclerView.getAdapter() != null)
-                        recyclerView.getAdapter().notifyDataSetChanged();
                 }
             }, 200);
 
@@ -215,8 +212,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
                     @Override
                     public void run() {
                         MusicPlayer.playOrPause();
-                        if (recyclerView != null && recyclerView.getAdapter() != null)
-                            recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }, 250);
             }
@@ -349,9 +344,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
     private void setSongDetails() {
         updateSongDetails();
-
-        if (recyclerView != null)
-            setQueueSongs();
 
         setSeekBarListener();
 
@@ -513,14 +505,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         }
     }
 
-    public void setQueueSongs() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //load queue songs in asynctask
-        if (getActivity() != null)
-            new loadQueueSongs().execute("");
-
-    }
-
     public void updatePlayPauseButton() {
         if (MusicPlayer.isPlaying()) {
             if (!mPlayPause.isPlayed()) {
@@ -558,9 +542,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
     public void onMetaChanged() {
         updateSongDetails();
-
-        if (recyclerView != null && recyclerView.getAdapter() != null)
-            recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public void setMusicStateListener() {
@@ -632,32 +613,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
                 }
             }.attach(v);
             */
-        }
-    }
-
-    private class loadQueueSongs extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            if (getActivity() != null) {
-                mAdapter = new BaseQueueAdapter((AppCompatActivity) getActivity(), QueueLoader.getQueueSongs(getActivity()));
-                return "Executed";
-            } else return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (result != null) {
-                recyclerView.setAdapter(mAdapter);
-                if (getActivity() != null)
-                    recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-                recyclerView.scrollToPosition(MusicPlayer.getQueuePosition() - 1);
-            }
-
-        }
-
-        @Override
-        protected void onPreExecute() {
         }
     }
 }
