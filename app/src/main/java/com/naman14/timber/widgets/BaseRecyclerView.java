@@ -1,6 +1,7 @@
 package com.naman14.timber.widgets;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.afollestad.appthemeengine.ATE;
 import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.MusicPlayer;
+import com.naman14.timber.R;
 import com.naman14.timber.utils.Helpers;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
@@ -66,7 +68,7 @@ public class BaseRecyclerView extends RecyclerView {
 
         MaterialDrawableBuilder builder = MaterialDrawableBuilder.with(context)
                 .setIcon(MaterialDrawableBuilder.IconValue.MUSIC_NOTE)
-                .setColor(Config.textColorPrimary(context, Helpers.getATEKey(context)))
+                .setColor(Color.parseColor("#3E3E3E"))
                 .setSizeDp(30);
 
         ((TextView) emptyView).setCompoundDrawables(null, builder.build(), null, null);

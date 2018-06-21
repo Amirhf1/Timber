@@ -14,6 +14,7 @@
 
 package com.naman14.timber.adapters;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -43,13 +44,11 @@ public class BaseQueueAdapter extends RecyclerView.Adapter<BaseQueueAdapter.Item
     public static int currentlyPlayingPosition;
     private List<Song> arraylist;
     private AppCompatActivity mContext;
-    private String ateKey;
 
     public BaseQueueAdapter(AppCompatActivity context, List<Song> arraylist) {
         this.arraylist = arraylist;
         this.mContext = context;
         currentlyPlayingPosition = MusicPlayer.getQueuePosition();
-        this.ateKey = Helpers.getATEKey(context);
     }
 
     @Override
@@ -67,15 +66,15 @@ public class BaseQueueAdapter extends RecyclerView.Adapter<BaseQueueAdapter.Item
         itemHolder.artist.setText(localItem.artistName);
 
         if (MusicPlayer.getCurrentAudioId() == localItem.id) {
-            itemHolder.title.setTextColor(Config.accentColor(mContext, ateKey));
+            itemHolder.title.setTextColor(Color.parseColor("#3E3E3E"));
             if (MusicPlayer.isPlaying()) {
-                itemHolder.visualizer.setColor(Config.accentColor(mContext, ateKey));
+                itemHolder.visualizer.setColor(mContext.getResources().getColor(R.color.colorAccent));
                 itemHolder.visualizer.setVisibility(View.VISIBLE);
             } else {
                 itemHolder.visualizer.setVisibility(View.GONE);
             }
         } else {
-            itemHolder.title.setTextColor(Config.textColorPrimary(mContext, ateKey));
+            itemHolder.title.setTextColor(Color.parseColor("#3E3E3E"));
             itemHolder.visualizer.setVisibility(View.GONE);
         }
         ImageLoader.getInstance().displayImage(TimberUtils.getAlbumArtUri(localItem.albumId).toString(),

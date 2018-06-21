@@ -67,7 +67,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     private PlayPauseDrawable playPauseDrawable = new PlayPauseDrawable();
     private FloatingActionButton playPauseFloating;
     private View playPauseWrapper;
-    private String ateKey;
     private int overflowcounter = 0;
     private TextView songtitle, songalbum, songartist, songduration, elapsedtime;
     private SeekBar mProgress;
@@ -201,8 +200,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ateKey = Helpers.getATEKey(getActivity());
-        accentColor = Config.accentColor(getActivity(), ateKey);
+        accentColor = getResources().getColor(R.color.colorAccent);
     }
 
     @Override

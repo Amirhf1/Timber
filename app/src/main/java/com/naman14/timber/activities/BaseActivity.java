@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,7 +65,7 @@ import java.util.ArrayList;
 
 import static com.naman14.timber.MusicPlayer.mService;
 
-public class BaseActivity extends ATEActivity implements ServiceConnection, MusicStateListener {
+public class BaseActivity extends AppCompatActivity implements ServiceConnection, MusicStateListener {
 
     private final ArrayList<MusicStateListener> mMusicStateListener = new ArrayList<>();
     private MusicPlayer.ServiceToken mToken;
@@ -274,7 +275,6 @@ public class BaseActivity extends ATEActivity implements ServiceConnection, Musi
                     R.id.media_route_menu_item);
         }
 
-        ATE.applyMenu(this, getATEKey(), menu);
         return true;
     }
 
@@ -286,12 +286,6 @@ public class BaseActivity extends ATEActivity implements ServiceConnection, Musi
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Nullable
-    @Override
-    public String getATEKey() {
-        return Helpers.getATEKey(this);
     }
 
     public void setPanelSlideListeners(SlidingUpPanelLayout panelLayout) {

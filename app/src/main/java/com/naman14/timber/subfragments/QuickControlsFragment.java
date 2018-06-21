@@ -162,7 +162,7 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
         layoutParams.setMargins(0, -(mProgress.getMeasuredHeight() / 2), 0, 0);
         mProgress.setLayoutParams(layoutParams);
 
-        mPlayPause.setColor(Config.accentColor(getActivity(), Helpers.getATEKey(getActivity())));
+        mPlayPause.setColor(getResources().getColor(R.color.colorAccent));
         mPlayPauseExpanded.setColor(Color.WHITE);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
