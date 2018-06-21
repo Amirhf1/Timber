@@ -28,9 +28,7 @@ public class NowPlayingActivity extends BaseActivity implements ATEActivityTheme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nowplaying);
 
-        final String fragmentID = Constants.TIMBER6;
-
-        Fragment fragment = NavigationUtils.getFragmentForNowplayingID(fragmentID);
+        Fragment fragment = NavigationUtils.getFragmentForNowplayingID();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()
@@ -62,14 +60,5 @@ public class NowPlayingActivity extends BaseActivity implements ATEActivityTheme
     @Override
     public int getStatusBarColor() {
         return Color.TRANSPARENT;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (PreferencesUtility.getInstance(this).didNowplayingThemeChanged()) {
-            PreferencesUtility.getInstance(this).setNowPlayingThemeChanged(false);
-            recreate();
-        }
     }
 }

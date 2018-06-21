@@ -78,31 +78,6 @@ public final class PreferencesUtility {
         return sInstance;
     }
 
-
-    public void setOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener) {
-        mPreferences.registerOnSharedPreferenceChangeListener(listener);
-    }
-
-    public boolean isArtistsInGrid() {
-        return mPreferences.getBoolean(TOGGLE_ARTIST_GRID, true);
-    }
-
-    public void setArtistsInGrid(final boolean b) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(TOGGLE_ARTIST_GRID, b);
-        editor.apply();
-    }
-
-    public boolean isAlbumsInGrid() {
-        return mPreferences.getBoolean(TOGGLE_ALBUM_GRID, true);
-    }
-
-    public void setAlbumsInGrid(final boolean b) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(TOGGLE_ALBUM_GRID, b);
-        editor.apply();
-    }
-
     public boolean pauseEnabledOnDetach() {
         return mPreferences.getBoolean(TOGGLE_HEADPHONE_PAUSE, true);
     }
@@ -111,115 +86,8 @@ public final class PreferencesUtility {
         return mPreferences.getString(THEME_PREFERNCE, "light");
     }
 
-    public int getStartPageIndex() {
-        return mPreferences.getInt(START_PAGE_INDEX, 0);
-    }
-
-    public void setStartPageIndex(final int index) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putInt(START_PAGE_INDEX, index);
-        editor.apply();
-    }
-
-    public void setLastOpenedAsStartPagePreference(boolean preference) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(START_PAGE_PREFERENCE_LASTOPENED, preference);
-        editor.apply();
-    }
-
-    public boolean lastOpenedIsStartPagePreference() {
-        return mPreferences.getBoolean(START_PAGE_PREFERENCE_LASTOPENED, true);
-    }
-
-    private void setSortOrder(final String key, final String value) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-
-    public final String getArtistSortOrder() {
-        return mPreferences.getString(ARTIST_SORT_ORDER, SortOrder.ArtistSortOrder.ARTIST_A_Z);
-    }
-
-    public void setArtistSortOrder(final String value) {
-        setSortOrder(ARTIST_SORT_ORDER, value);
-    }
-
-    public final String getArtistSongSortOrder() {
-        return mPreferences.getString(ARTIST_SONG_SORT_ORDER,
-                SortOrder.ArtistSongSortOrder.SONG_A_Z);
-    }
-
-    public void setArtistSongSortOrder(final String value) {
-        setSortOrder(ARTIST_SONG_SORT_ORDER, value);
-    }
-
-    public final String getArtistAlbumSortOrder() {
-        return mPreferences.getString(ARTIST_ALBUM_SORT_ORDER,
-                SortOrder.ArtistAlbumSortOrder.ALBUM_A_Z);
-    }
-
-    public void setArtistAlbumSortOrder(final String value) {
-        setSortOrder(ARTIST_ALBUM_SORT_ORDER, value);
-    }
-
-    public final String getAlbumSortOrder() {
-        return mPreferences.getString(ALBUM_SORT_ORDER, SortOrder.AlbumSortOrder.ALBUM_A_Z);
-    }
-
-    public void setAlbumSortOrder(final String value) {
-        setSortOrder(ALBUM_SORT_ORDER, value);
-    }
-
-    public final String getAlbumSongSortOrder() {
-        return mPreferences.getString(ALBUM_SONG_SORT_ORDER,
-                SortOrder.AlbumSongSortOrder.SONG_TRACK_LIST);
-    }
-
-    public void setAlbumSongSortOrder(final String value) {
-        setSortOrder(ALBUM_SONG_SORT_ORDER, value);
-    }
-
-    public final String getSongSortOrder() {
-        return mPreferences.getString(SONG_SORT_ORDER, SortOrder.SongSortOrder.SONG_A_Z);
-    }
-
-    public void setSongSortOrder(final String value) {
-        setSortOrder(SONG_SORT_ORDER, value);
-    }
-
-    public final boolean didNowplayingThemeChanged() {
-        return mPreferences.getBoolean(NOW_PLAYNG_THEME_VALUE, false);
-    }
-
-    public void setNowPlayingThemeChanged(final boolean value) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(NOW_PLAYNG_THEME_VALUE, value);
-        editor.apply();
-    }
-
     public boolean getXPosedTrackselectorEnabled() {
         return mPreferences.getBoolean(TOGGLE_XPOSED_TRACKSELECTOR, false);
-    }
-
-    public int getPlaylistView() {
-        return mPreferences.getInt(TOGGLE_PLAYLIST_VIEW ,0);
-    }
-
-    public void setPlaylistView(final int i) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putInt(TOGGLE_PLAYLIST_VIEW, i);
-        editor.apply();
-    }
-
-    public boolean showAutoPlaylist() {
-        return mPreferences.getBoolean(TOGGLE_SHOW_AUTO_PLAYLIST, true);
-    }
-
-    public void setToggleShowAutoPlaylist(final boolean b) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(TOGGLE_SHOW_AUTO_PLAYLIST, b);
-        editor.apply();
     }
 
     /** @parm lastAddedMillis timestamp in millis used as a cutoff for last added playlist */
@@ -227,32 +95,8 @@ public final class PreferencesUtility {
         mPreferences.edit().putLong(LAST_ADDED_CUTOFF, lastAddedMillis).apply();
     }
 
-    public long getLastAddedCutoff() {
-        return mPreferences.getLong(LAST_ADDED_CUTOFF, 0L);
-    }
-
     public boolean isGesturesEnabled() {
         return mPreferences.getBoolean(GESTURES, true);
-    }
-
-    public void storeLastFolder(String path) {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(LAST_FOLDER, path);
-        editor.apply();
-    }
-
-    public String getLastFolder() {
-        return mPreferences.getString(LAST_FOLDER, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath());
-    }
-
-    public boolean fullUnlocked() {
-        return mPreferences.getBoolean(FULL_UNLOCKED, false);
-    }
-
-    public void setFullUnlocked(final boolean b) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(FULL_UNLOCKED, b);
-        editor.apply();
     }
 
     public boolean getSetAlbumartLockscreen() {
