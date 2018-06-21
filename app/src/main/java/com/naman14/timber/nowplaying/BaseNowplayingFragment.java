@@ -40,7 +40,6 @@ import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.activities.BaseActivity;
 import com.naman14.timber.adapters.BaseQueueAdapter;
-import com.naman14.timber.adapters.SlidingQueueAdapter;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.timely.TimelyView;
 import com.naman14.timber.utils.Helpers;
@@ -117,7 +116,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         }
     };
     private BaseQueueAdapter mAdapter;
-    private SlidingQueueAdapter slidingQueueAdapter;
     private TimelyView timelyView11, timelyView12, timelyView13, timelyView14, timelyView15;
     private TextView hourColon;
     private int[] timeArr = new int[]{0, 0, 0, 0, 0};
