@@ -34,7 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TargetApi(21)
-public class WearBrowserService extends MediaBrowserService {
+public class
+
+
+WearBrowserService extends MediaBrowserService {
 
     public static final String MEDIA_ID_ROOT = "__ROOT__";
     public static final int TYPE_ARTIST = 0;

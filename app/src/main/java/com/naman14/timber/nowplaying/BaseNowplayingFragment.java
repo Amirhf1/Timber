@@ -234,6 +234,12 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         fragmentPaused = true;
