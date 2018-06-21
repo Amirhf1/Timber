@@ -118,23 +118,9 @@ public class SongLoader {
         return getSongsForCursor(makeSongCursor(context, null, null));
     }
 
-    public static long[] getSongListInFolder(Context context, String path) {
-        String[] whereArgs = new String[]{path + "%"};
-        return getSongListForCursor(makeSongCursor(context, MediaStore.Audio.Media.DATA + " LIKE ?", whereArgs, null));
-    }
-
     public static Song getSongForID(Context context, long id) {
         return getSongForCursor(makeSongCursor(context, "_id=" + String.valueOf(id), null));
     }
-
-    public static List<Song> searchSongs(Context context, String searchString, int limit) {
-        ArrayList<Song> result = getSongsForCursor(makeSongCursor(context, "title LIKE ?", new String[]{searchString + "%"}));
-        if (result.size() < limit) {
-            result.addAll(getSongsForCursor(makeSongCursor(context, "title LIKE ?", new String[]{"%_" + searchString + "%"})));
-        }
-        return result.size() < limit ? result : result.subList(0, limit);
-    }
-
 
     public static Cursor makeSongCursor(Context context, String selection, String[] paramArrayOfString) {
         return makeSongCursor(context, selection, paramArrayOfString, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
