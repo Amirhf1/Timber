@@ -38,7 +38,6 @@ import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.fragments.FoldersFragment;
 import com.naman14.timber.fragments.MainFragment;
-import com.naman14.timber.fragments.QueueFragment;
 import com.naman14.timber.permissions.Nammu;
 import com.naman14.timber.permissions.PermissionCallback;
 import com.naman14.timber.slidinguppanel.SlidingUpPanelLayout;
@@ -53,7 +52,6 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
     private SlidingUpPanelLayout panelLayout;
     private String action;
     private Map<String, Runnable> navigationMap = new HashMap<String, Runnable>();
-    private boolean isDarkTheme;
 
     private Runnable navigateLibrary = new Runnable() {
         public void run() {
@@ -88,8 +86,6 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
     public void onCreate(Bundle savedInstanceState) {
 
         action = getIntent().getAction();
-
-        isDarkTheme = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -223,12 +219,6 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
         Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private boolean isNavigatingMain() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        return (currentFragment instanceof MainFragment || currentFragment instanceof QueueFragment
-                || currentFragment instanceof FoldersFragment);
-    }
-
     private void addBackstackListener() {
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -241,7 +231,7 @@ public class MainActivity extends BaseActivity implements ATEActivityThemeCustom
 
     @Override
     public int getActivityTheme() {
-        return isDarkTheme ? R.style.AppThemeNormalDark : R.style.AppThemeNormalLight;
+        return R.style.AppThemeNormalLight;
     }
 
     @Override
