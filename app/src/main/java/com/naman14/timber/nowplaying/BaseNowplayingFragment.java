@@ -271,13 +271,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         songduration = (TextView) view.findViewById(R.id.song_duration);
         elapsedtime = (TextView) view.findViewById(R.id.song_elapsed_time);
 
-        timelyView11 = (TimelyView) view.findViewById(R.id.timelyView11);
-        timelyView12 = (TimelyView) view.findViewById(R.id.timelyView12);
-        timelyView13 = (TimelyView) view.findViewById(R.id.timelyView13);
-        timelyView14 = (TimelyView) view.findViewById(R.id.timelyView14);
-        timelyView15 = (TimelyView) view.findViewById(R.id.timelyView15);
-        hourColon = (TextView) view.findViewById(R.id.hour_colon);
-
         mProgress = (SeekBar) view.findViewById(R.id.song_progress);
 
         //mCircularProgress = (CircularSeekBar) view.findViewById(R.id.song_progress_circular);
