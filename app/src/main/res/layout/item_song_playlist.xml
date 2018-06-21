@@ -73,20 +73,6 @@
             android:layout_toLeftOf="@+id/popup_menu"
             android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/popup_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:foregroundTint="#434343"
-            android:padding="5dp"
-            android:src="@drawable/ic_more_vert_white_24dp"
-            android:theme="@style/Theme.AppCompat" />
-
-
     </RelativeLayout>
 
 
