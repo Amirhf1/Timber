@@ -17,7 +17,6 @@ package com.naman14.timber.nowplaying;
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -27,13 +26,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -43,21 +37,16 @@ import android.widget.Toast;
 import com.afollestad.appthemeengine.ATE;
 import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.MusicPlayer;
-import com.naman14.timber.MusicService;
 import com.naman14.timber.R;
 import com.naman14.timber.activities.BaseActivity;
 import com.naman14.timber.adapters.BaseQueueAdapter;
 import com.naman14.timber.adapters.SlidingQueueAdapter;
-import com.naman14.timber.dataloaders.QueueLoader;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.timely.TimelyView;
 import com.naman14.timber.utils.Helpers;
-import com.naman14.timber.utils.NavigationUtils;
 import com.naman14.timber.utils.PreferencesUtility;
-import com.naman14.timber.utils.SlideTrackSwitcher;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.CircularSeekBar;
-import com.naman14.timber.widgets.DividerItemDecoration;
 import com.naman14.timber.widgets.PlayPauseButton;
 import com.naman14.timber.widgets.PlayPauseDrawable;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -65,38 +54,24 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.security.InvalidParameterException;
 
 public class BaseNowplayingFragment extends Fragment implements MusicStateListener {
 
+    public ImageView albumart;
+    public int accentColor;
+    boolean fragmentPaused = false;
     private MaterialIconView previous, next;
     private PlayPauseButton mPlayPause;
     private PlayPauseDrawable playPauseDrawable = new PlayPauseDrawable();
     private FloatingActionButton playPauseFloating;
     private View playPauseWrapper;
-
     private String ateKey;
     private int overflowcounter = 0;
     private TextView songtitle, songalbum, songartist, songduration, elapsedtime;
     private SeekBar mProgress;
-    boolean fragmentPaused = false;
-
-    private CircularSeekBar mCircularProgress;
-    private BaseQueueAdapter mAdapter;
-    private SlidingQueueAdapter slidingQueueAdapter;
-
-    private TimelyView timelyView11, timelyView12, timelyView13, timelyView14, timelyView15;
-    private TextView hourColon;
-    private int[] timeArr = new int[]{0, 0, 0, 0, 0};
-    private Handler mElapsedTimeHandler;
-    private boolean duetoplaypause = false;
-
-    public ImageView albumart;
-    public int accentColor;
-
     //seekbar
     public Runnable mUpdateProgress = new Runnable() {
 
@@ -112,12 +87,12 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
             overflowcounter--;
             int delay = 250; //not sure why this delay was so high before
             if (overflowcounter < 0 && !fragmentPaused) {
-                    overflowcounter++;
-                    mProgress.postDelayed(mUpdateProgress, delay); //delay
+                overflowcounter++;
+                mProgress.postDelayed(mUpdateProgress, delay); //delay
             }
         }
     };
-
+    private CircularSeekBar mCircularProgress;
     //circular seekbar
     public Runnable mUpdateCircularProgress = new Runnable() {
 
@@ -141,7 +116,12 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
         }
     };
-
+    private BaseQueueAdapter mAdapter;
+    private SlidingQueueAdapter slidingQueueAdapter;
+    private TimelyView timelyView11, timelyView12, timelyView13, timelyView14, timelyView15;
+    private TextView hourColon;
+    private int[] timeArr = new int[]{0, 0, 0, 0, 0};
+    private Handler mElapsedTimeHandler;
     public Runnable mUpdateElapsedTime = new Runnable() {
         @Override
         public void run() {
@@ -174,7 +154,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
         }
     };
-
+    private boolean duetoplaypause = false;
     private final View.OnClickListener mButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -202,7 +182,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         @Override
         public void onClick(View v) {
             duetoplaypause = true;
-            if(MusicPlayer.getCurrentTrack() == null) {
+            if (MusicPlayer.getCurrentTrack() == null) {
                 Toast.makeText(getContext(), getString(R.string.now_playing_no_track_selected), Toast.LENGTH_SHORT).show();
             } else {
                 playPauseDrawable.transformToPlay(true);
@@ -215,7 +195,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
                     }
                 }, 250);
             }
-
 
 
         }
@@ -454,17 +433,15 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
                         });
             }
             if (songtitle != null && MusicPlayer.getTrackName() != null) {
-                    songtitle.setText(MusicPlayer.getTrackName());
-                    if(MusicPlayer.getTrackName().length() <= 23){
-                        songtitle.setTextSize(25);
-                    }
-                    else if(MusicPlayer.getTrackName().length() >= 30){
-                        songtitle.setTextSize(18);
-                    }
-                    else{
-                        songtitle.setTextSize(18 + (MusicPlayer.getTrackName().length() - 24));
-                    }
-                    Log.v("BaseNowPlayingFrag", "Title Text Size: " + songtitle.getTextSize());
+                songtitle.setText(MusicPlayer.getTrackName());
+                if (MusicPlayer.getTrackName().length() <= 23) {
+                    songtitle.setTextSize(25);
+                } else if (MusicPlayer.getTrackName().length() >= 30) {
+                    songtitle.setTextSize(18);
+                } else {
+                    songtitle.setTextSize(18 + (MusicPlayer.getTrackName().length() - 24));
+                }
+                Log.v("BaseNowPlayingFrag", "Title Text Size: " + songtitle.getTextSize());
             }
             if (songartist != null) {
                 songartist.setText(MusicPlayer.getArtistName());
