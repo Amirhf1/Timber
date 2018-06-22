@@ -14,7 +14,6 @@
 
 package com.naman14.timber.adapters;
 
-import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,20 +22,21 @@ import android.view.ViewGroup;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.models.Song;
 import com.naman14.timber.utils.NavigationUtils;
-import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.BubbleTextGetter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> implements BubbleTextGetter {
 
-    private List<Song> items;
+    private static final boolean navigateNowPlaying = false;
+    private final List<Song> items = new ArrayList<>();
     private long[] songIDs;
 
-    private static final boolean navigateNowPlaying = false;
-
     public SongsListAdapter(List<Song> items) {
-        this.items = items;
+        if (items != null) {
+            this.items.addAll(items);
+        }
         this.songIDs = getSongIds();
     }
 
@@ -58,7 +58,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
 
     @Override
     public int getItemCount() {
-        return (null != items ? items.size() : 0);
+        return items.size();
     }
 
     private long[] getSongIds() {
@@ -72,9 +72,9 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
 
     @Override
     public String getTextToShowInBubble(final int pos) {
-        if (items == null || items.size() == 0)
+        if (items.size() == 0)
             return "";
-        Character ch = items.get(pos).title.charAt(0);
+        final Character ch = items.get(pos).title.charAt(0);
         if (Character.isDigit(ch)) {
             return "#";
         } else
