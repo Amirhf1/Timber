@@ -114,7 +114,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
         }
     };
-    private BaseQueueAdapter mAdapter;
     private TimelyView timelyView11, timelyView12, timelyView13, timelyView14, timelyView15;
     private TextView hourColon;
     private int[] timeArr = new int[]{0, 0, 0, 0, 0};

@@ -43,53 +43,25 @@ public class BaseQueueAdapter extends RecyclerView.Adapter<BaseQueueAdapter.Item
 
     public static int currentlyPlayingPosition;
     private List<Song> arraylist;
-    private AppCompatActivity mContext;
 
-    public BaseQueueAdapter(AppCompatActivity context, List<Song> arraylist) {
+    public BaseQueueAdapter( List<Song> arraylist) {
         this.arraylist = arraylist;
-        this.mContext = context;
         currentlyPlayingPosition = MusicPlayer.getQueuePosition();
     }
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_song_timber1, null);
-        ItemHolder ml = new ItemHolder(v);
-        return ml;
+        return ItemHolder.buildFor(this, viewGroup);
     }
 
     @Override
     public void onBindViewHolder(ItemHolder itemHolder, int i) {
-        Song localItem = arraylist.get(i);
-
-        itemHolder.title.setText(localItem.title);
-        itemHolder.artist.setText(localItem.artistName);
-
-        if (MusicPlayer.getCurrentAudioId() == localItem.id) {
-            itemHolder.title.setTextColor(Color.parseColor("#3E3E3E"));
-            if (MusicPlayer.isPlaying()) {
-                itemHolder.visualizer.setColor(mContext.getResources().getColor(R.color.colorAccent));
-                itemHolder.visualizer.setVisibility(View.VISIBLE);
-            } else {
-                itemHolder.visualizer.setVisibility(View.GONE);
-            }
-        } else {
-            itemHolder.title.setTextColor(Color.parseColor("#3E3E3E"));
-            itemHolder.visualizer.setVisibility(View.GONE);
-        }
-        ImageLoader.getInstance().displayImage(TimberUtils.getAlbumArtUri(localItem.albumId).toString(),
-                itemHolder.albumArt, new DisplayImageOptions.Builder().cacheInMemory(true)
-                        .showImageOnLoading(R.drawable.ic_empty_music2).resetViewBeforeLoading(true).build());
-        setOnPopupMenuListener(itemHolder, i);
+        itemHolder.bind(arraylist.get(i));
     }
 
     @Override
     public int getItemCount() {
         return (null != arraylist ? arraylist.size() : 0);
-    }
-
-    private void setOnPopupMenuListener(ItemHolder itemHolder, final int position) {
-
     }
 
     public long[] getSongIds() {
@@ -105,13 +77,19 @@ public class BaseQueueAdapter extends RecyclerView.Adapter<BaseQueueAdapter.Item
         arraylist.remove(i);
     }
 
-    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final BaseQueueAdapter baseQueueAdapter;
         protected TextView title, artist;
         protected ImageView albumArt;
         private MusicVisualizer visualizer;
 
-        public ItemHolder(View view) {
+        public static ItemHolder buildFor(BaseQueueAdapter baseQueueAdapter, ViewGroup viewGroup){
+            return new ItemHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_song_timber1, viewGroup, false), baseQueueAdapter);
+        }
+
+        public ItemHolder(View view, BaseQueueAdapter baseQueueAdapter) {
             super(view);
+            this.baseQueueAdapter = baseQueueAdapter;
             this.title = (TextView) view.findViewById(R.id.song_title);
             this.artist = (TextView) view.findViewById(R.id.song_artist);
             this.albumArt = (ImageView) view.findViewById(R.id.albumArt);
@@ -130,8 +108,8 @@ public class BaseQueueAdapter extends RecyclerView.Adapter<BaseQueueAdapter.Item
                     handler1.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            notifyItemChanged(currentlyPlayingPosition);
-                            notifyItemChanged(getAdapterPosition());
+                            baseQueueAdapter.notifyItemChanged(currentlyPlayingPosition);
+                            baseQueueAdapter.notifyItemChanged(getAdapterPosition());
                         }
                     }, 50);
                 }
@@ -139,6 +117,26 @@ public class BaseQueueAdapter extends RecyclerView.Adapter<BaseQueueAdapter.Item
 
         }
 
+        public void bind(Song localItem) {
+            title.setText(localItem.title);
+            artist.setText(localItem.artistName);
+
+            if (MusicPlayer.getCurrentAudioId() == localItem.id) {
+                title.setTextColor(Color.parseColor("#3E3E3E"));
+                if (MusicPlayer.isPlaying()) {
+                    visualizer.setColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
+                    visualizer.setVisibility(View.VISIBLE);
+                } else {
+                    visualizer.setVisibility(View.GONE);
+                }
+            } else {
+                title.setTextColor(Color.parseColor("#3E3E3E"));
+                visualizer.setVisibility(View.GONE);
+            }
+            ImageLoader.getInstance().displayImage(TimberUtils.getAlbumArtUri(localItem.albumId).toString(),
+                    albumArt, new DisplayImageOptions.Builder().cacheInMemory(true)
+                            .showImageOnLoading(R.drawable.ic_empty_music2).resetViewBeforeLoading(true).build());
+        }
     }
 
 }
