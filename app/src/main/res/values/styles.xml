@@ -35,15 +35,6 @@
         <item name="cardBackgroundColor">@color/window_background</item>
     </style>
 
-    <style name="CardViewStyle.Dark" parent="CardView">
-        <item name="cardBackgroundColor">@color/window_background_dark</item>
-    </style>
-
-    <style name="CardViewStyle.Black" parent="CardView">
-        <item name="cardBackgroundColor">@color/window_background_black</item>
-    </style>
-
-
     <style name="CustomCastMiniController" parent="CastMiniController">
         <item name="castShowImageThumbnail">true</item>
         <item name="castTitleTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
