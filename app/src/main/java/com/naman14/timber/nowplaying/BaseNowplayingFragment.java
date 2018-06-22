@@ -65,7 +65,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     private MaterialIconView previous, next;
     private PlayPauseButton mPlayPause;
     private PlayPauseDrawable playPauseDrawable = new PlayPauseDrawable();
-    private FloatingActionButton playPauseFloating;
     private View playPauseWrapper;
     private int overflowcounter = 0;
     private TextView songtitle, songalbum, songartist, songduration, elapsedtime;
@@ -231,7 +230,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         next = (MaterialIconView) view.findViewById(R.id.next);
         previous = (MaterialIconView) view.findViewById(R.id.previous);
         mPlayPause = (PlayPauseButton) view.findViewById(R.id.playpause);
-//        playPauseFloating = (FloatingActionButton) view.findViewById(R.id.playpausefloating);
         playPauseWrapper = view.findViewById(R.id.playpausewrapper);
 
         songtitle = (TextView) view.findViewById(R.id.song_title);
@@ -241,11 +239,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         elapsedtime = (TextView) view.findViewById(R.id.song_elapsed_time);
 
         mProgress = (SeekBar) view.findViewById(R.id.song_progress);
-
-        //mCircularProgress = (CircularSeekBar) view.findViewById(R.id.song_progress_circular);
-
-        //recyclerView = (RecyclerView) view.findViewById(R.id.queue_recyclerview);
-
 
         songtitle.setSelected(true);
 
@@ -258,14 +251,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         }
         if (mPlayPause != null && getActivity() != null) {
             mPlayPause.setColor(ContextCompat.getColor(getContext(), android.R.color.white));
-        }
-
-        if (playPauseFloating != null) {
-            playPauseDrawable.setColorFilter(TimberUtils.getBlackWhiteColor(accentColor), PorterDuff.Mode.MULTIPLY);
-            playPauseFloating.setImageDrawable(playPauseDrawable);
-            if (MusicPlayer.isPlaying())
-                playPauseDrawable.transformToPause(false);
-            else playPauseDrawable.transformToPlay(false);
         }
 
         if (mCircularProgress != null) {
@@ -304,16 +289,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
         setSongDetails();
 
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("dark_theme", false)) {
-            ATE.apply(this, "dark_theme");
-        } else {
-            ATE.apply(this, "light_theme");
-        }
     }
 
     private void setSongDetails() {
@@ -358,10 +333,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
         if (playPauseWrapper != null)
             playPauseWrapper.setOnClickListener(mButtonListener);
-
-        if (playPauseFloating != null)
-            playPauseFloating.setOnClickListener(mFLoatingButtonListener);
-
     }
 
 
@@ -449,9 +420,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
         if (mPlayPause != null)
             updatePlayPauseButton();
-
-        if (playPauseFloating != null)
-            updatePlayPauseFloatingButton();
 
         if (songduration != null && getActivity() != null)
             songduration.setText(TimberUtils.makeShortTimeString(getActivity(), MusicPlayer.duration() / 1000));
