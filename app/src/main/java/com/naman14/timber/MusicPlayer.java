@@ -15,46 +15,31 @@
 
 package com.naman14.timber;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
-import com.naman14.timber.dataloaders.SongLoader;
 import com.naman14.timber.helpers.MusicPlaybackTrack;
-import com.naman14.timber.utils.TimberUtils;
+import com.naman14.timber.models.Song;
 import com.naman14.timber.utils.TimberUtils.IdType;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.WeakHashMap;
-
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public class MusicPlayer {
 
-    private static final WeakHashMap<Context, ServiceBinder> mConnectionMap;
-    private static final long[] sEmptyList;
+    private static final WeakHashMap<Context, ServiceBinder> mConnectionMap = new WeakHashMap<>();
+    private static final long[] sEmptyList = new long[0];
     public static ITimberService mService = null;
     private static ContentValues[] mContentValuesCache = null;
-
-    static {
-        mConnectionMap = new WeakHashMap<Context, ServiceBinder>();
-        sEmptyList = new long[0];
-    }
 
     public static final ServiceToken bindToService(final Context context,
                                                    final ServiceConnection callback) {
@@ -298,6 +283,18 @@ public class MusicPlayer {
         }
     }
 
+    private static long[] getSongIds(List<Song> items) {
+        long[] ret = new long[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            ret[i] = items.get(i).id;
+        }
+        return ret;
+    }
+
+    public static void playAll(final List<Song> list, int position) {
+        playAll(getSongIds(list), position);
+    }
+
     public static void playAll(final long[] list, int position) {
         if (list == null || list.length == 0 || mService == null) {
             return;
@@ -373,7 +370,7 @@ public class MusicPlayer {
     }
 
     public static void clearQueue() {
-        if (mService!=null) {
+        if (mService != null) {
             try {
                 mService.removeTracks(0, Integer.MAX_VALUE);
             } catch (final RemoteException ignored) {

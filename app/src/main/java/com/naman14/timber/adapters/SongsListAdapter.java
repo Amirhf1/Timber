@@ -31,13 +31,11 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
 
     private static final boolean navigateNowPlaying = false;
     private final List<Song> items = new ArrayList<>();
-    private long[] songIDs;
 
     public SongsListAdapter(List<Song> items) {
         if (items != null) {
             this.items.addAll(items);
         }
-        this.songIDs = getSongIds();
     }
 
     @Override
@@ -61,15 +59,6 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
         return items.size();
     }
 
-    private long[] getSongIds() {
-        long[] ret = new long[getItemCount()];
-        for (int i = 0; i < getItemCount(); i++) {
-            ret[i] = items.get(i).id;
-        }
-
-        return ret;
-    }
-
     @Override
     public String getTextToShowInBubble(final int pos) {
         if (items.size() == 0)
@@ -85,7 +74,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                MusicPlayer.playAll(songIDs, adapterPosition);
+                MusicPlayer.playAll(items, adapterPosition);
 
                 if (navigateNowPlaying) {
                     NavigationUtils.navigateToNowplaying(v.getContext(), true);
