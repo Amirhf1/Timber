@@ -378,14 +378,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         }
     }
 
-    public void updatePlayPauseFloatingButton() {
-        if (MusicPlayer.isPlaying()) {
-            playPauseDrawable.transformToPause(false);
-        } else {
-            playPauseDrawable.transformToPlay(false);
-        }
-    }
-
     public void notifyPlayingDrawableChange() {
         int position = MusicPlayer.getQueuePosition();
         BaseQueueAdapter.currentlyPlayingPosition = position;
