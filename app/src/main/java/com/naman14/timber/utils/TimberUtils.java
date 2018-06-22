@@ -14,36 +14,17 @@
 
 package com.naman14.timber.utils;
 
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.media.MediaMetadataRetriever;
-import android.media.audiofx.AudioEffect;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.adapters.BaseQueueAdapter;
-import com.naman14.timber.adapters.BaseSongAdapter;
-import com.naman14.timber.provider.RecentStore;
-import com.naman14.timber.provider.SongPlayCount;
 
-import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
@@ -96,29 +77,6 @@ public class TimberUtils {
         } else return Color.BLACK;
     }
 
-    public enum IdType {
-        NA(0),
-        Artist(1),
-        Album(2),
-        Playlist(3);
-
-        public final int mId;
-
-        IdType(final int id) {
-            mId = id;
-        }
-
-        public static IdType getTypeById(int id) {
-            for (IdType type : values()) {
-                if (type.mId == id) {
-                    return type;
-                }
-            }
-
-            throw new IllegalArgumentException("Unrecognized id: " + id);
-        }
-    }
-
     public static Uri getSongUri(Context context, long id) {
         final String[] projection = new String[]{
                 BaseColumns._ID, MediaStore.MediaColumns.DATA, MediaStore.Audio.AudioColumns.ALBUM_ID
@@ -158,7 +116,7 @@ public class TimberUtils {
                     if (!addr.isLoopbackAddress()) {
                         String sAddr = addr.getHostAddress();
                         //boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
-                        boolean isIPv4 = sAddr.indexOf(':')<0;
+                        boolean isIPv4 = sAddr.indexOf(':') < 0;
 
                         if (useIPv4) {
                             if (isIPv4)
@@ -166,14 +124,38 @@ public class TimberUtils {
                         } else {
                             if (!isIPv4) {
                                 int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
-                                return delim<0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
+                                return delim < 0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
                             }
                         }
                     }
                 }
             }
-        } catch (Exception ex) { }
+        } catch (Exception ex) {
+        }
         return "";
+    }
+
+    public enum IdType {
+        NA(0),
+        Artist(1),
+        Album(2),
+        Playlist(3);
+
+        public final int mId;
+
+        IdType(final int id) {
+            mId = id;
+        }
+
+        public static IdType getTypeById(int id) {
+            for (IdType type : values()) {
+                if (type.mId == id) {
+                    return type;
+                }
+            }
+
+            throw new IllegalArgumentException("Unrecognized id: " + id);
+        }
     }
 
 }

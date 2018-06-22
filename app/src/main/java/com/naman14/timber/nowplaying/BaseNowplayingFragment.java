@@ -16,12 +16,9 @@ package com.naman14.timber.nowplaying;
 
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -32,20 +29,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.afollestad.appthemeengine.ATE;
-import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.activities.BaseActivity;
-import com.naman14.timber.adapters.BaseQueueAdapter;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.timely.TimelyView;
-import com.naman14.timber.utils.Helpers;
 import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
-import com.naman14.timber.widgets.CircularSeekBar;
 import com.naman14.timber.widgets.PlayPauseButton;
 import com.naman14.timber.widgets.PlayPauseDrawable;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -380,7 +371,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
     public void notifyPlayingDrawableChange() {
         int position = MusicPlayer.getQueuePosition();
-        BaseQueueAdapter.currentlyPlayingPosition = position;
+        // BaseQueueAdapter.currentlyPlayingPosition = position;
     }
 
     public void restartLoader() {
