@@ -297,7 +297,7 @@ public class MusicPlayer {
         }
     }
 
-    public static void playAll(final Context context, final long[] list, int position,
+    public static void playAll(final long[] list, int position,
                                final long sourceId, final IdType sourceType,
                                final boolean forceShuffle) {
         if (list == null || list.length == 0 || mService == null) {
