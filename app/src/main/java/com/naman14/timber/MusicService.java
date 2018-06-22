@@ -1980,11 +1980,13 @@ public class MusicService extends Service {
         }
 
         if (mPlayer.isInitialized()) {
+            /*
             final long duration = mPlayer.duration();
             if (mRepeatMode != REPEAT_CURRENT && duration > 2000
                     && mPlayer.position() >= duration - 2000) {
                 gotoNext(true);
             }
+            */
 
             mPlayer.start();
             mPlayerHandler.removeMessages(FADEDOWN);
