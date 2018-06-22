@@ -55,7 +55,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     boolean fragmentPaused = false;
     private MaterialIconView previous, next;
     private PlayPauseButton mPlayPause;
-    private PlayPauseDrawable playPauseDrawable = new PlayPauseDrawable();
     private View playPauseWrapper;
     private int overflowcounter = 0;
     private TextView songtitle, songalbum, songartist, songduration, elapsedtime;
