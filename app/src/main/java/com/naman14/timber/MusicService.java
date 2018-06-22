@@ -1251,6 +1251,9 @@ public class MusicService extends Service {
             mNotificationPostTime = System.currentTimeMillis();
         }
 
+        final PendingIntent previousAction = retrievePlaybackAction(PREVIOUS_ACTION);
+        final PendingIntent nextAction = retrievePlaybackAction(NEXT_ACTION);
+
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(artwork)
@@ -1260,12 +1263,13 @@ public class MusicService extends Service {
                 .setWhen(mNotificationPostTime)
                 .addAction(R.drawable.ic_skip_previous_white_36dp,
                         "",
-                        retrievePlaybackAction(PREVIOUS_ACTION))
+                        previousAction)
                 .addAction(playButtonResId, "",
                         retrievePlaybackAction(TOGGLEPAUSE_ACTION))
                 .addAction(R.drawable.ic_skip_next_white_36dp,
                         "",
-                        retrievePlaybackAction(NEXT_ACTION));
+                        nextAction)
+        ;
 
         if (TimberUtils.isJellyBeanMR1()) {
             builder.setShowWhen(false);
@@ -2015,6 +2019,7 @@ public class MusicService extends Service {
     }
 
     public void gotoNext(final boolean force) {
+        /*
         if (D) Log.d(TAG, "Going to next track");
         synchronized (this) {
             if (mPlaylist.size() <= 0) {
@@ -2038,6 +2043,7 @@ public class MusicService extends Service {
             play();
             notifyChange(META_CHANGED);
         }
+        */
     }
 
     public void goToPosition(int pos) {
@@ -2079,6 +2085,7 @@ public class MusicService extends Service {
     }
 
     public void prev(boolean forcePrevious) {
+        /*
         synchronized (this) {
             boolean goPrevious = getRepeatMode() != REPEAT_CURRENT &&
                     (position() < REWIND_INSTEAD_PREVIOUS_THRESHOLD || forcePrevious);
@@ -2102,6 +2109,7 @@ public class MusicService extends Service {
                 play(false);
             }
         }
+        */
     }
 
     public int getPreviousPlayPosition(boolean removeFromHistory) {

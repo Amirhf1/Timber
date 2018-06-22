@@ -94,12 +94,12 @@ public class MusicPlayer {
     }
 
     public static void next() {
-        try {
-            if (mService != null) {
-                mService.next();
-            }
-        } catch (final RemoteException ignored) {
-        }
+        //try {
+        //    if (mService != null) {
+        //        mService.next();
+        //    }
+        //} catch (final RemoteException ignored) {
+        //}
     }
 
     public static void initPlaybackServiceWithSettings(final Context context) {
@@ -113,13 +113,13 @@ public class MusicPlayer {
     }
 
     public static void previous(final Context context, final boolean force) {
-        final Intent previous = new Intent(context, MusicService.class);
-        if (force) {
-            previous.setAction(MusicService.PREVIOUS_FORCE_ACTION);
-        } else {
-            previous.setAction(MusicService.PREVIOUS_ACTION);
-        }
-        context.startService(previous);
+        //final Intent previous = new Intent(context, MusicService.class);
+        //if (force) {
+        //    previous.setAction(MusicService.PREVIOUS_FORCE_ACTION);
+        //} else {
+        //    previous.setAction(MusicService.PREVIOUS_ACTION);
+        //}
+        //context.startService(previous);
     }
 
     public static void playOrPause() {
@@ -241,6 +241,16 @@ public class MusicPlayer {
         if (mService != null) {
             try {
                 return mService.getNextAudioId();
+            } catch (final RemoteException ignored) {
+            }
+        }
+        return -1;
+    }
+
+    public static final long getPreviousAudioId() {
+        if (mService != null) {
+            try {
+                return mService.getPreviousAudioId();
             } catch (final RemoteException ignored) {
             }
         }
