@@ -14,8 +14,11 @@
 
 package com.naman14.timber.fragments;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,20 +41,25 @@ public class SongsFragment extends Fragment implements MusicStateListener {
     private BaseRecyclerView recyclerView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(
-                R.layout.fragment_recyclerview, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = rootView.findViewById(R.id.recyclerview);
+        recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setEmptyView(getActivity(), rootView.findViewById(R.id.list_empty), "No media found");
-        FastScroller fastScroller =  rootView.findViewById(R.id.fastscroller);
+        recyclerView.setEmptyView(getActivity(), view.findViewById(R.id.list_empty), "No media found");
+        final FastScroller fastScroller =  view.findViewById(R.id.fastscroller);
         fastScroller.setRecyclerView(recyclerView);
 
-        new loadSongs().execute("");
-        ((BaseActivity) getActivity()).setMusicStateListenerListener(this);
+        new LoadSongs().execute("");
+        final Activity activity = getActivity();
+        if(activity instanceof BaseActivity) {
+            ((BaseActivity)activity).setMusicStateListenerListener(this);
+        }
+    }
 
-        return rootView;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_recyclerview, container, false);
     }
 
     public void restartLoader() {
@@ -67,12 +75,12 @@ public class SongsFragment extends Fragment implements MusicStateListener {
             mAdapter.notifyDataSetChanged();
     }
 
-    private class loadSongs extends AsyncTask<String, Void, String> {
+    private class LoadSongs extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
             if (getActivity() != null)
-                mAdapter = new SongsListAdapter((AppCompatActivity) getActivity(), SongLoader.getAllSongs(getActivity()), false, false);
+                mAdapter = new SongsListAdapter(SongLoader.getAllSongs(getActivity()));
             return "Executed";
         }
 
@@ -81,11 +89,6 @@ public class SongsFragment extends Fragment implements MusicStateListener {
             recyclerView.setAdapter(mAdapter);
             if (getActivity() != null)
                 recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-
-        }
-
-        @Override
-        protected void onPreExecute() {
         }
     }
 }

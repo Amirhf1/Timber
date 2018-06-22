@@ -25,7 +25,7 @@ import com.naman14.timber.nowplaying.Timber6;
 
 public class NavigationUtils {
 
-    public static void navigateToNowplaying(Activity context, boolean withAnimations) {
+    public static void navigateToNowplaying(Context context, boolean withAnimations) {
 
         final Intent intent = new Intent(context, NowPlayingActivity.class);
         context.startActivity(intent);

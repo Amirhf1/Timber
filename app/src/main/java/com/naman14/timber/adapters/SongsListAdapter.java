@@ -14,128 +14,57 @@
 
 package com.naman14.timber.adapters;
 
-import android.graphics.Color;
+import android.content.Context;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 
-import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.MusicPlayer;
-import com.naman14.timber.R;
 import com.naman14.timber.models.Song;
-import com.naman14.timber.utils.Helpers;
 import com.naman14.timber.utils.NavigationUtils;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.BubbleTextGetter;
-import com.naman14.timber.widgets.MusicVisualizer;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-public class SongsListAdapter extends BaseSongAdapter<SongsListAdapter.ItemHolder> implements BubbleTextGetter {
+public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> implements BubbleTextGetter {
 
-    public int currentlyPlayingPosition;
-    private List<Song> arraylist;
-    private AppCompatActivity mContext;
+    private List<Song> items;
     private long[] songIDs;
-    private boolean isPlaylist;
-    private boolean animate;
-    private int lastPosition = -1;
-    private String ateKey;
-    private long playlistId;
 
-    public SongsListAdapter(AppCompatActivity context, List<Song> arraylist, boolean isPlaylistSong, boolean animate) {
-        this.arraylist = arraylist;
-        this.mContext = context;
-        this.isPlaylist = isPlaylistSong;
+    private static final boolean navigateNowPlaying = false;
+
+    public SongsListAdapter(List<Song> items) {
+        this.items = items;
         this.songIDs = getSongIds();
-        this.ateKey = Helpers.getATEKey(context);
-        this.animate = animate;
     }
 
     @Override
-    public ItemHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        if (isPlaylist) {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_song_playlist, null);
-            ItemHolder ml = new ItemHolder(v);
-            return ml;
-        } else {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_song, null);
-            ItemHolder ml = new ItemHolder(v);
-            return ml;
-        }
+    public SongViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        return SongViewHolder.buildFor(viewGroup)
+                .setItemClickedListener(new SongViewHolder.ItemClickedListener() {
+                    @Override
+                    public void onItemClicked(final View v, final int position) {
+                        onSongClicked(v, position);
+                    }
+                });
     }
 
     @Override
-    public void onBindViewHolder(ItemHolder itemHolder, int i) {
-        Song localItem = arraylist.get(i);
-
-        itemHolder.title.setText(localItem.title);
-        itemHolder.artist.setText(localItem.artistName);
-
-        ImageLoader.getInstance().displayImage(TimberUtils.getAlbumArtUri(localItem.albumId).toString(),
-                itemHolder.albumArt, new DisplayImageOptions.Builder().cacheInMemory(true)
-                        .showImageOnLoading(R.drawable.ic_empty_music2)
-                        .resetViewBeforeLoading(true).build());
-
-        if (MusicPlayer.getCurrentAudioId() == localItem.id) {
-            itemHolder.title.setTextColor(Config.accentColor(mContext, ateKey));
-            if (MusicPlayer.isPlaying()) {
-                itemHolder.visualizer.setColor(Config.accentColor(mContext, ateKey));
-                itemHolder.visualizer.setVisibility(View.VISIBLE);
-            } else {
-                itemHolder.visualizer.setVisibility(View.GONE);
-            }
-        } else {
-            itemHolder.visualizer.setVisibility(View.GONE);
-            if (isPlaylist) {
-                itemHolder.title.setTextColor(Color.WHITE);
-            } else {
-                itemHolder.title.setTextColor(Config.textColorPrimary(mContext, ateKey));
-            }
-        }
-
-
-        if (animate && isPlaylist) {
-            if (TimberUtils.isLollipop())
-                setAnimation(itemHolder.itemView, i);
-            else {
-                if (i > 10)
-                    setAnimation(itemHolder.itemView, i);
-            }
-        }
-
-
-        setOnPopupMenuListener(itemHolder, i);
-
-    }
-
-    public void setPlaylistId(long playlistId) {
-        this.playlistId = playlistId;
+    public void onBindViewHolder(SongViewHolder itemHolder, int i) {
+        itemHolder.bind(items.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return (null != arraylist ? arraylist.size() : 0);
+        return (null != items ? items.size() : 0);
     }
 
-    private void setOnPopupMenuListener(ItemHolder itemHolder, final int position) {
-    }
-
-    public long[] getSongIds() {
+    private long[] getSongIds() {
         long[] ret = new long[getItemCount()];
         for (int i = 0; i < getItemCount(); i++) {
-            ret[i] = arraylist.get(i).id;
+            ret[i] = items.get(i).id;
         }
 
         return ret;
@@ -143,81 +72,34 @@ public class SongsListAdapter extends BaseSongAdapter<SongsListAdapter.ItemHolde
 
     @Override
     public String getTextToShowInBubble(final int pos) {
-        if (arraylist == null || arraylist.size() == 0)
+        if (items == null || items.size() == 0)
             return "";
-        Character ch = arraylist.get(pos).title.charAt(0);
+        Character ch = items.get(pos).title.charAt(0);
         if (Character.isDigit(ch)) {
             return "#";
         } else
             return Character.toString(ch);
     }
 
-    private void setAnimation(View viewToAnimate, int position) {
-        // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_slide_in_bottom);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
-    }
+    private void onSongClicked(final View v, final int adapterPosition) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MusicPlayer.playAll(v.getContext(), songIDs, adapterPosition, -1, TimberUtils.IdType.NA, false);
 
-    @Override
-    public void updateDataSet(List<Song> arraylist) {
-        this.arraylist = arraylist;
-        this.songIDs = getSongIds();
-    }
-
-    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        protected TextView title, artist;
-        protected ImageView albumArt;
-        private MusicVisualizer visualizer;
-
-        public ItemHolder(View view) {
-            super(view);
-            this.title = (TextView) view.findViewById(R.id.song_title);
-            this.artist = (TextView) view.findViewById(R.id.song_artist);
-            this.albumArt = (ImageView) view.findViewById(R.id.albumArt);
-            visualizer = (MusicVisualizer) view.findViewById(R.id.visualizer);
-            view.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    playAll(mContext, songIDs, getAdapterPosition(), -1,
-                            TimberUtils.IdType.NA, false,
-                            arraylist.get(getAdapterPosition()), false);
-                    Handler handler1 = new Handler();
-                    handler1.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            notifyItemChanged(currentlyPlayingPosition);
-                            notifyItemChanged(getAdapterPosition());
-                        }
-                    }, 50);
+                if (navigateNowPlaying) {
+                    NavigationUtils.navigateToNowplaying(v.getContext(), true);
                 }
-            }, 100);
 
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyItemChanged(adapterPosition);
+                    }
+                }, 50);
 
-        }
-
-    }
-
-    public Song getSongAt(int i) {
-        return arraylist.get(i);
-    }
-
-    public void addSongTo(int i, Song song) {
-        arraylist.add(i, song);
-    }
-
-    @Override
-    public void removeSongAt(int i) {
-        arraylist.remove(i);
-        updateDataSet(arraylist);
+            }
+        }, 100);
     }
 }
 
