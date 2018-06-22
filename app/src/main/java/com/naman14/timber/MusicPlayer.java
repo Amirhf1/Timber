@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.naman14.timber.dataloaders.SongLoader;
 import com.naman14.timber.helpers.MusicPlaybackTrack;
+import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.utils.TimberUtils.IdType;
 
 import java.util.Arrays;
@@ -297,11 +298,13 @@ public class MusicPlayer {
         }
     }
 
-    public static void playAll(final long[] list, int position,
-                               final long sourceId, final IdType sourceType) {
+    public static void playAll(final long[] list, int position) {
         if (list == null || list.length == 0 || mService == null) {
             return;
         }
+
+        final long sourceId = -1;
+
         try {
             final long currentId = mService.getAudioId();
             final int currentQueuePosition = getQueuePosition();
@@ -315,7 +318,7 @@ public class MusicPlayer {
             if (position < 0) {
                 position = 0;
             }
-            mService.open(list, position, sourceId, sourceType.mId);
+            mService.open(list, position, sourceId, IdType.NA.mId);
             mService.play();
         } catch (final RemoteException ignored) {
         } catch (IllegalStateException e) {

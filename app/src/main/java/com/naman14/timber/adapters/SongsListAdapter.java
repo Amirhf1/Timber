@@ -85,7 +85,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                MusicPlayer.playAll(songIDs, adapterPosition, -1, TimberUtils.IdType.NA);
+                MusicPlayer.playAll(songIDs, adapterPosition);
 
                 if (navigateNowPlaying) {
                     NavigationUtils.navigateToNowplaying(v.getContext(), true);
