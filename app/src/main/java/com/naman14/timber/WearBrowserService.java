@@ -231,7 +231,7 @@ WearBrowserService extends MediaBrowserService {
                 } else {
                     switch (Integer.parseInt(Character.toString(parentId.charAt(0)))) {
                         case TYPE_SONG:
-                            List<Song> songList = SongLoader.getAllSongs(mContext);
+                            final List<Song> songList = SongLoader.getAllSongs(mContext);
                             for (Song song : songList) {
                                 fillMediaItems(mediaItems, String.valueOf(song.id), song.title, TimberUtils.getAlbumArtUri(song.albumId), song.artistName, MediaBrowser.MediaItem.FLAG_PLAYABLE);
                             }

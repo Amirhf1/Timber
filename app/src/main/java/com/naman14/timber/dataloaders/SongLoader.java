@@ -16,6 +16,7 @@ package com.naman14.timber.dataloaders;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -23,14 +24,22 @@ import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.naman14.timber.R;
 import com.naman14.timber.models.Song;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SongLoader {
 
     private static final long[] sEmptyList = new long[0];
+
+    public static List<Song> getSongsForAssets(Context context){
+        return Arrays.asList(
+                songFromFile(context, R.raw.fiche1)
+        );
+    }
 
     public static ArrayList<Song> getSongsForCursor(Cursor cursor) {
         ArrayList arrayList = new ArrayList();
@@ -73,28 +82,7 @@ public class SongLoader {
         return song;
     }
 
-    public static final long[] getSongListForCursor(Cursor cursor) {
-        if (cursor == null) {
-            return sEmptyList;
-        }
-        final int len = cursor.getCount();
-        final long[] list = new long[len];
-        cursor.moveToFirst();
-        int columnIndex = -1;
-        try {
-            columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Playlists.Members.AUDIO_ID);
-        } catch (final IllegalArgumentException notaplaylist) {
-            columnIndex = cursor.getColumnIndexOrThrow(BaseColumns._ID);
-        }
-        for (int i = 0; i < len; i++) {
-            list[i] = cursor.getLong(columnIndex);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        cursor = null;
-        return list;
-    }
-
+    /*
     public static Song getSongFromPath(String songPath, Context context) {
         ContentResolver cr = context.getContentResolver();
 
@@ -113,10 +101,18 @@ public class SongLoader {
         }
         else return new Song();
     }
+    */
 
+    public static List<Song> getAllSongs(Context context) {
+        return getSongsForAssets(context);
+    }
+
+    /*
     public static ArrayList<Song> getAllSongs(Context context) {
         return getSongsForCursor(makeSongCursor(context, null, null));
     }
+
+    */
 
     public static Song getSongForID(Context context, long id) {
         return getSongForCursor(makeSongCursor(context, "_id=" + String.valueOf(id), null));
@@ -133,12 +129,14 @@ public class SongLoader {
             selectionStatement = selectionStatement + " AND " + selection;
         }
         return context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new String[]{"_id", "title", "artist", "album", "duration", "track", "artist_id", "album_id"}, selectionStatement, paramArrayOfString, sortOrder);
-
     }
 
-    public static Song songFromFile(String filePath) {
+    public static Song songFromFile(Context context, int rawId) {
+        final AssetFileDescriptor afd=context.getResources().openRawResourceFd(rawId);
+
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        mmr.setDataSource(filePath);
+        mmr.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+
         return new Song(
                 -1,
                 -1,
