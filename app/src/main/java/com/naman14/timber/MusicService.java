@@ -424,7 +424,7 @@ public class MusicService extends Service {
             }
         });
         mSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
-                          | MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
+                | MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
     }
 
     @Override
@@ -531,22 +531,26 @@ public class MusicService extends Service {
 
         if (CMDNEXT.equals(command) || NEXT_ACTION.equals(action)) {
             gotoNext(true);
-        } else if (CMDPREVIOUS.equals(command) || PREVIOUS_ACTION.equals(action)
-                || PREVIOUS_FORCE_ACTION.equals(action)) {
+        } else if (CMDPREVIOUS.equals(command) ||
+                PREVIOUS_ACTION.equals(action) ||
+                PREVIOUS_FORCE_ACTION.equals(action)) {
             prev(PREVIOUS_FORCE_ACTION.equals(action));
-        } else if (CMDTOGGLEPAUSE.equals(command) || TOGGLEPAUSE_ACTION.equals(action)) {
+        } else if (CMDTOGGLEPAUSE.equals(command) ||
+                TOGGLEPAUSE_ACTION.equals(action)) {
             if (isPlaying()) {
                 pause();
                 mPausedByTransientLossOfFocus = false;
             } else {
                 play();
             }
-        } else if (CMDPAUSE.equals(command) || PAUSE_ACTION.equals(action)) {
+        } else if (CMDPAUSE.equals(command) ||
+                PAUSE_ACTION.equals(action)) {
             pause();
             mPausedByTransientLossOfFocus = false;
         } else if (CMDPLAY.equals(command)) {
             play();
-        } else if (CMDSTOP.equals(command) || STOP_ACTION.equals(action)) {
+        } else if (CMDSTOP.equals(command) ||
+                STOP_ACTION.equals(action)) {
             pause();
             mPausedByTransientLossOfFocus = false;
             seek(0);
@@ -557,8 +561,7 @@ public class MusicService extends Service {
             cycleShuffle();
         } else if (UPDATE_PREFERENCES.equals(action)) {
             onPreferencesUpdate(intent.getExtras());
-        }
-        else if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(action)) {
+        } else if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(action)) {
             if (PreferencesUtility.getInstance(getApplicationContext()).pauseEnabledOnDetach()) {
                 pause();
             }
@@ -567,7 +570,7 @@ public class MusicService extends Service {
 
     private void onPreferencesUpdate(Bundle extras) {
         mShowAlbumArtOnLockscreen = extras.getBoolean("lockscreen", mShowAlbumArtOnLockscreen);
-        mActivateXTrackSelector = extras.getBoolean("xtrack",mActivateXTrackSelector);
+        mActivateXTrackSelector = extras.getBoolean("xtrack", mActivateXTrackSelector);
         notifyChange(META_CHANGED);
 
     }
@@ -1179,8 +1182,12 @@ public class MusicService extends Service {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mSession.setPlaybackState(new PlaybackStateCompat.Builder()
                         .setState(playState, position(), 1.0f)
-                        .setActions(PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PAUSE | PlaybackStateCompat.ACTION_PLAY_PAUSE |
-                                PlaybackStateCompat.ACTION_SKIP_TO_NEXT | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
+                        .setActions(
+                                PlaybackStateCompat.ACTION_PLAY |
+                                        PlaybackStateCompat.ACTION_PAUSE |
+                                        PlaybackStateCompat.ACTION_PLAY_PAUSE |
+                                        PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
+                                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
                         .build());
             }
         } else if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
@@ -1211,8 +1218,11 @@ public class MusicService extends Service {
 
                 mSession.setPlaybackState(new PlaybackStateCompat.Builder()
                         .setState(playState, position(), 1.0f)
-                        .setActions(PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PAUSE | PlaybackStateCompat.ACTION_PLAY_PAUSE |
-                                PlaybackStateCompat.ACTION_SKIP_TO_NEXT | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
+                        .setActions(PlaybackStateCompat.ACTION_PLAY |
+                                PlaybackStateCompat.ACTION_PAUSE |
+                                PlaybackStateCompat.ACTION_PLAY_PAUSE |
+                                PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
                         .build());
             }
         }
@@ -1268,8 +1278,7 @@ public class MusicService extends Service {
                         retrievePlaybackAction(TOGGLEPAUSE_ACTION))
                 .addAction(R.drawable.ic_skip_next_white_36dp,
                         "",
-                        nextAction)
-        ;
+                        nextAction);
 
         if (TimberUtils.isJellyBeanMR1()) {
             builder.setShowWhen(false);
