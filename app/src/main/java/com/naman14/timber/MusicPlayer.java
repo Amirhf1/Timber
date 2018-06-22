@@ -92,12 +92,6 @@ public class MusicPlayer {
 
     }
 
-    public static void asyncNext(final Context context) {
-        final Intent previous = new Intent(context, MusicService.class);
-        previous.setAction(MusicService.NEXT_ACTION);
-        context.startService(previous);
-    }
-
     public static void previous(final Context context, final boolean force) {
         //final Intent previous = new Intent(context, MusicService.class);
         //if (force) {
@@ -118,28 +112,6 @@ public class MusicPlayer {
                 }
             }
         } catch (final Exception ignored) {
-        }
-    }
-
-    public static void cycleRepeat() {
-        try {
-            if (mService != null) {
-                switch (mService.getRepeatMode()) {
-                    case MusicService.REPEAT_NONE:
-                        mService.setRepeatMode(MusicService.REPEAT_ALL);
-                        break;
-                    case MusicService.REPEAT_ALL:
-                        mService.setRepeatMode(MusicService.REPEAT_CURRENT);
-                        if (mService.getShuffleMode() != MusicService.SHUFFLE_NONE) {
-                            mService.setShuffleMode(MusicService.SHUFFLE_NONE);
-                        }
-                        break;
-                    default:
-                        mService.setRepeatMode(MusicService.REPEAT_NONE);
-                        break;
-                }
-            }
-        } catch (final RemoteException ignored) {
         }
     }
 
@@ -213,40 +185,10 @@ public class MusicPlayer {
         return null;
     }
 
-    public static final MusicPlaybackTrack getTrack(int index) {
-        if (mService != null) {
-            try {
-                return mService.getTrack(index);
-            } catch (final RemoteException ignored) {
-            }
-        }
-        return null;
-    }
-
     public static final long getNextAudioId() {
         if (mService != null) {
             try {
                 return mService.getNextAudioId();
-            } catch (final RemoteException ignored) {
-            }
-        }
-        return -1;
-    }
-
-    public static final long getPreviousAudioId() {
-        if (mService != null) {
-            try {
-                return mService.getPreviousAudioId();
-            } catch (final RemoteException ignored) {
-            }
-        }
-        return -1;
-    }
-
-    public static final int getAudioSessionId() {
-        if (mService != null) {
-            try {
-                return mService.getAudioSessionId();
             } catch (final RemoteException ignored) {
             }
         }
