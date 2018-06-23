@@ -1264,9 +1264,6 @@ public class MusicService extends Service {
             mNotificationPostTime = System.currentTimeMillis();
         }
 
-        final PendingIntent previousAction = retrievePlaybackAction(PREVIOUS_ACTION);
-        final PendingIntent nextAction = retrievePlaybackAction(NEXT_ACTION);
-
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(artwork)
@@ -1274,14 +1271,14 @@ public class MusicService extends Service {
                 .setContentTitle(getTrackName())
                 .setContentText(text)
                 .setWhen(mNotificationPostTime)
-                .addAction(R.drawable.ic_skip_previous_white_36dp,
-                        "",
-                        previousAction)
                 .addAction(playButtonResId, "",
                         retrievePlaybackAction(TOGGLEPAUSE_ACTION))
-                .addAction(R.drawable.ic_skip_next_white_36dp,
+                .addAction(R.drawable.ic_transparent,
                         "",
-                        nextAction);
+                        retrievePlaybackAction(PREVIOUS_ACTION))
+                .addAction(R.drawable.ic_transparent,
+                        "",
+                        retrievePlaybackAction(NEXT_ACTION));
 
         if (TimberUtils.isJellyBeanMR1()) {
             builder.setShowWhen(false);
