@@ -242,6 +242,7 @@ public class MusicService extends Service {
     private String tackName;
     private String artistName;
     private int songImage;
+    private int songId;
 
     @Override
     public IBinder onBind(final Intent intent) {
@@ -1425,18 +1426,19 @@ public class MusicService extends Service {
         }
     }
 
-    private boolean openRaw(String title, String artistName, int rawId, int image) {
+    private boolean openRaw(int songId, String title, String artistName, int rawId, int image) {
         if (D) Log.d(TAG, "openFile: rawId = " + rawId);
         synchronized (this) {
             if (rawId < 0) {
                 return false;
             }
 
+            this.songId = songId;
             this.tackName = title;
             this.artistName = artistName;
             this.songImage = image;
 
-            mFileToPlay = "raw"+rawId;
+            mFileToPlay = "raw" + rawId;
             mPlayer.setDataSource(rawId);
 
             if (mPlayer.isInitialized()) {
@@ -1763,12 +1765,13 @@ public class MusicService extends Service {
     }
 
     public long getAudioId() {
+        /*
         MusicPlaybackTrack track = getCurrentTrack();
         if (track != null) {
             return track.mId;
         }
-
-        return -1;
+        */
+        return songId;
     }
 
     public MusicPlaybackTrack getCurrentTrack() {
@@ -2416,7 +2419,7 @@ public class MusicService extends Service {
         public void setDataSource(final int rawId) {
             try {
                 mIsInitialized = setDataSourceImpl(mCurrentMediaPlayer, rawId);
-                Log.e("FLO", "mIsInitialized : "+mIsInitialized);
+                Log.e("FLO", "mIsInitialized : " + mIsInitialized);
 
                 if (mIsInitialized) {
                     setNextDataSource(null);
@@ -2457,7 +2460,7 @@ public class MusicService extends Service {
             try {
                 final MusicService musicService = mService.get();
 
-                Log.d("FLO", "musicService = "+musicService);
+                Log.d("FLO", "musicService = " + musicService);
                 if (musicService != null) {
                     player.reset();
                     player.setOnPreparedListener(null);
@@ -2642,8 +2645,8 @@ public class MusicService extends Service {
         }
 
         @Override
-        public void openRaw(String title, String artistName, int rawId, int image) throws RemoteException {
-            mService.get().openRaw(title, artistName, rawId, image);
+        public void openRaw(int songId, String title, String artistName, int rawId, int image) throws RemoteException {
+            mService.get().openRaw(songId, title, artistName, rawId, image);
         }
 
         @Override

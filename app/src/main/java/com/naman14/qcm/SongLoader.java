@@ -37,9 +37,9 @@ public class SongLoader {
         if(songs.isEmpty()){
             songs.addAll(
                     Arrays.asList(
-                            songFromFile(context, "Fiche 1", R.raw.fiche1, R.drawable.ic_song_qcm),
-                            songFromFile(context, "Fiche 2", R.raw.fiche1, R.drawable.ic_empty_music2),
-                            songFromFile(context, "Fiche 3", R.raw.fiche1, R.drawable.ic_empty_music2)
+                            songFromFile(context, 1, "Fiche 1", R.raw.fiche1, R.drawable.ic_song_qcm),
+                            songFromFile(context, 2, "Fiche 2", R.raw.fiche1, R.drawable.ic_empty_music2),
+                            songFromFile(context, 3, "Fiche 3", R.raw.fiche1, R.drawable.ic_empty_music2)
                     )
             );
         }
@@ -59,14 +59,14 @@ public class SongLoader {
         return getSongsForAssets(context);
     }
 
-    public static Song songFromFile(Context context, String name, int rawId, int imageId) {
+    public static Song songFromFile(Context context, int id, String name, int rawId, int imageId) {
         final AssetFileDescriptor afd = context.getResources().openRawResourceFd(rawId);
 
         final MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         mmr.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
 
         return new Song(
-                rawId,
+                id,
                 name,
                 rawId,
                 imageId,
