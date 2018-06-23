@@ -22,12 +22,11 @@ import android.view.ViewGroup;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.activities.NowPlayingMusicActivity;
 import com.naman14.timber.models.Song;
-import com.naman14.timber.widgets.BubbleTextGetter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> implements BubbleTextGetter {
+public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> {
 
     private static final boolean navigateNowPlaying = false;
     private final List<Song> items = new ArrayList<>();
@@ -57,17 +56,6 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    @Override
-    public String getTextToShowInBubble(final int pos) {
-        if (items.size() == 0)
-            return "";
-        final Character ch = items.get(pos).getTitle().charAt(0);
-        if (Character.isDigit(ch)) {
-            return "#";
-        } else
-            return Character.toString(ch);
     }
 
     private void onSongClicked(final View v, final int adapterPosition) {
