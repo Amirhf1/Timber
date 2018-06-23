@@ -135,6 +135,16 @@ public class MusicPlayer {
         return null;
     }
 
+    public static int getSongImage() {
+        if (mService != null) {
+            try {
+                return mService.getSongImage();
+            } catch (final RemoteException ignored) {
+            }
+        }
+        return R.drawable.below_shadow;
+    }
+
     public static final String getArtistName() {
         if (mService != null) {
             try {
@@ -349,7 +359,7 @@ public class MusicPlayer {
     public static final void openSong(final Song song) {
         if (mService != null) {
             try {
-                mService.openRaw(song.getTitle(), song.getSubTitle(), song.getRawId());
+                mService.openRaw(song.getTitle(), song.getSubTitle(), song.getRawId(), song.getImage());
                 mService.play();
             } catch (RemoteException e) {
                 e.printStackTrace();

@@ -37,7 +37,7 @@ public class SongLoader {
         if(songs.isEmpty()){
             songs.addAll(
                     Arrays.asList(
-                            songFromFile(context, "Fiche 1", R.raw.fiche1, R.drawable.ic_empty_music2),
+                            songFromFile(context, "Fiche 1", R.raw.fiche1, R.drawable.ic_song_qcm),
                             songFromFile(context, "Fiche 2", R.raw.fiche1, R.drawable.ic_empty_music2),
                             songFromFile(context, "Fiche 3", R.raw.fiche1, R.drawable.ic_empty_music2)
                     )

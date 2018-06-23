@@ -35,6 +35,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
@@ -225,7 +226,7 @@ public class MusicService extends Service {
     private HandlerThread mHandlerThread;
     private BroadcastReceiver mUnmountReceiver = null;
     private MusicPlaybackState mPlaybackStateStore;
-    private boolean mShowAlbumArtOnLockscreen;
+    private boolean mShowAlbumArtOnLockscreen = true;
     private boolean mActivateXTrackSelector;
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
 
@@ -242,6 +243,7 @@ public class MusicService extends Service {
 
     private String tackName;
     private String artistName;
+    private int songImage;
 
     @Override
     public IBinder onBind(final Intent intent) {
@@ -355,7 +357,6 @@ public class MusicService extends Service {
         //Try to push LastFMCache
 
         PreferencesUtility pref = PreferencesUtility.getInstance(this);
-        mShowAlbumArtOnLockscreen = pref.getSetAlbumartLockscreen();
         mActivateXTrackSelector = pref.getXPosedTrackselectorEnabled();
     }
 
@@ -564,7 +565,6 @@ public class MusicService extends Service {
     }
 
     private void onPreferencesUpdate(Bundle extras) {
-        mShowAlbumArtOnLockscreen = extras.getBoolean("lockscreen", mShowAlbumArtOnLockscreen);
         mActivateXTrackSelector = extras.getBoolean("xtrack", mActivateXTrackSelector);
         notifyChange(META_CHANGED);
 
@@ -1143,7 +1143,7 @@ public class MusicService extends Service {
             if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
                 Bitmap albumArt = null;
                 if (mShowAlbumArtOnLockscreen) {
-                    albumArt = ImageLoader.getInstance().loadImageSync(TimberUtils.getAlbumArtUri(getAlbumId()).toString());
+                    albumArt = BitmapFactory.decodeResource(getResources(), getSongImage());
                     if (albumArt != null) {
 
                         Bitmap.Config config = albumArt.getConfig();
@@ -1188,7 +1188,7 @@ public class MusicService extends Service {
         } else if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
             Bitmap albumArt = null;
             if (mShowAlbumArtOnLockscreen) {
-                albumArt = ImageLoader.getInstance().loadImageSync(TimberUtils.getAlbumArtUri(getAlbumId()).toString());
+                albumArt = BitmapFactory.decodeResource(getResources(), getSongImage());
                 if (albumArt != null) {
 
                     Bitmap.Config config = albumArt.getConfig();
@@ -1236,6 +1236,7 @@ public class MusicService extends Service {
     private Notification buildNotification() {
         final String albumName = getAlbumName();
         final String artistName = getArtistName();
+        final int songImage = getSongImage();
         final boolean isPlaying = isPlaying();
         String text = TextUtils.isEmpty(albumName)
                 ? artistName : artistName + " - " + albumName;
@@ -1246,11 +1247,10 @@ public class MusicService extends Service {
         final Intent nowPlayingIntent = new Intent(this, MainMusicActivity.class)
                 .setAction(Constants.NAVIGATE_NOWPLAYING);
         PendingIntent clickIntent = PendingIntent.getActivity(this, 0, nowPlayingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Bitmap artwork;
-        artwork = ImageLoader.getInstance().loadImageSync(TimberUtils.getAlbumArtUri(getAlbumId()).toString());
+        Bitmap artwork = BitmapFactory.decodeResource(getResources(), songImage);
 
         if (artwork == null) {
-            artwork = ImageLoader.getInstance().loadImageSync("drawable://" + R.drawable.ic_empty_music2);
+            BitmapFactory.decodeResource(getResources(), R.drawable.ic_empty_music2);
         }
 
         if (mNotificationPostTime == 0) {
@@ -1434,7 +1434,7 @@ public class MusicService extends Service {
         }
     }
 
-    private boolean openRaw(String title, String artistName, int rawId) {
+    private boolean openRaw(String title, String artistName, int rawId, int image) {
         if (D) Log.d(TAG, "openFile: rawId = " + rawId);
         synchronized (this) {
             if (rawId < 0) {
@@ -1443,6 +1443,7 @@ public class MusicService extends Service {
 
             this.tackName = title;
             this.artistName = artistName;
+            this.songImage = image;
 
             mFileToPlay = "raw"+rawId;
             mPlayer.setDataSource(rawId);
@@ -1752,6 +1753,10 @@ public class MusicService extends Service {
 
     public String getArtistName() {
         return artistName;
+    }
+
+    public int getSongImage() {
+        return songImage;
     }
 
     public String getAlbumArtistName() {
@@ -2646,8 +2651,8 @@ public class MusicService extends Service {
         }
 
         @Override
-        public void openRaw(String title, String artistName, int rawId) throws RemoteException {
-            mService.get().openRaw(title, artistName, rawId);
+        public void openRaw(String title, String artistName, int rawId, int image) throws RemoteException {
+            mService.get().openRaw(title, artistName, rawId, image);
         }
 
         @Override
@@ -2796,6 +2801,11 @@ public class MusicService extends Service {
         @Override
         public String getArtistName() throws RemoteException {
             return mService.get().getArtistName();
+        }
+
+        @Override
+        public int getSongImage() throws RemoteException {
+            return mService.get().getSongImage();
         }
 
         @Override
