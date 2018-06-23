@@ -69,7 +69,6 @@ import android.util.Log;
 import com.naman14.timber.activities.MainActivity;
 import com.naman14.timber.helpers.MediaButtonIntentReceiver;
 import com.naman14.timber.helpers.MusicPlaybackTrack;
-import com.naman14.timber.permissions.Nammu;
 import com.naman14.timber.provider.MusicPlaybackState;
 import com.naman14.timber.provider.RecentStore;
 import com.naman14.timber.provider.SongPlayCount;
@@ -620,9 +619,12 @@ public class MusicService extends Service {
 
     private int getCardId() {
         if (TimberUtils.isMarshmallow()) {
+            /*
             if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 return getmCardId();
-            } else return 0;
+            } else
+            */
+            return 0;
         } else {
             return getmCardId();
         }
@@ -1370,6 +1372,8 @@ public class MusicService extends Service {
     }
 
     private void reloadQueueAfterPermissionCheck() {
+        reloadQueue();
+        /*
         if (TimberUtils.isMarshmallow()) {
             if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 reloadQueue();
@@ -1377,6 +1381,7 @@ public class MusicService extends Service {
         } else {
             reloadQueue();
         }
+        */
     }
 
     private void reloadQueue() {

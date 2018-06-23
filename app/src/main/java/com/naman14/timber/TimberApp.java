@@ -18,7 +18,6 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
-import com.naman14.timber.permissions.Nammu;
 import com.naman14.timber.utils.PreferencesUtility;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -63,8 +62,6 @@ public class TimberApp extends MultiDexApplication {
         L.writeLogs(false);
         L.disableLogging();
         L.writeDebugLogs(false);
-        Nammu.init(this);
-
     }
 
 

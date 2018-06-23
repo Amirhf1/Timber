@@ -18,15 +18,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
 
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.fragments.MainFragment;
-import com.naman14.timber.permissions.Nammu;
-import com.naman14.timber.permissions.PermissionCallback;
 import com.naman14.timber.slidinguppanel.SlidingUpPanelLayout;
 import com.naman14.timber.utils.Constants;
 
@@ -46,17 +42,7 @@ public class MainActivity extends BaseActivity {
                     .commitAllowingStateLoss();
         }
     };
-    private final PermissionCallback permissionReadstorageCallback = new PermissionCallback() {
-        @Override
-        public void permissionGranted() {
-            loadEverything();
-        }
 
-        @Override
-        public void permissionRefused() {
-            finish();
-        }
-    };
     private Runnable navigateNowplaying = new Runnable() {
         public void run() {
             navigateLibrary.run();
@@ -113,26 +99,6 @@ public class MainActivity extends BaseActivity {
         new initQuickControls().execute("");
     }
 
-    private void checkPermissionAndThenLoad() {
-        //check for permission
-        if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) && Nammu.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            loadEverything();
-        } else {
-            if (Nammu.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Snackbar.make(panelLayout, "Timber will need to read external storage to display songs on your device.",
-                        Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Nammu.askForPermission(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, permissionReadstorageCallback);
-                            }
-                        }).show();
-            } else {
-                Nammu.askForPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, permissionReadstorageCallback);
-            }
-        }
-    }
-
     @Override
     public void onBackPressed() {
         if (panelLayout.isPanelExpanded()) {
@@ -149,11 +115,6 @@ public class MainActivity extends BaseActivity {
         if (panelLayout.isPanelHidden() && MusicPlayer.getTrackName() != null) {
             panelLayout.showPanel();
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void addBackstackListener() {
