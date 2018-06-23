@@ -36,6 +36,13 @@ import com.naman14.timber.widgets.FastScroller;
 
 public class SongsFragment extends Fragment implements MusicStateListener {
 
+    public static SongsFragment newInstance() {
+        final Bundle args = new Bundle();
+        final SongsFragment fragment = new SongsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private SongsListAdapter mAdapter;
     private BaseRecyclerView recyclerView;
 

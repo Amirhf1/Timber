@@ -21,7 +21,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.fragments.MainFragment;
+import com.naman14.timber.fragments.SongsFragment;
 import com.naman14.timber.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends BaseMusicActivity {
@@ -31,7 +31,7 @@ public class MainActivity extends BaseMusicActivity {
 
     private void navigateLibrary() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, MainFragment.newInstance())
+                .replace(R.id.fragment_container, SongsFragment.newInstance())
                 .commitAllowingStateLoss();
     }
 
