@@ -15,6 +15,7 @@ import com.afollestad.appthemeengine.customizers.ATEActivityThemeCustomizer;
 import com.afollestad.appthemeengine.customizers.ATEStatusBarCustomizer;
 import com.afollestad.appthemeengine.customizers.ATEToolbarCustomizer;
 import com.naman14.timber.R;
+import com.naman14.timber.nowplaying.Timber6;
 import com.naman14.timber.utils.Constants;
 import com.naman14.timber.utils.NavigationUtils;
 import com.naman14.timber.utils.PreferencesUtility;
@@ -33,11 +34,9 @@ public class NowPlayingActivity extends BaseActivity implements ATEActivityTheme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nowplaying);
 
-        Fragment fragment = NavigationUtils.getFragmentForNowplayingID();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new Timber6())
+                .commit();
 
     }
 

@@ -25,21 +25,14 @@ import com.naman14.timber.nowplaying.Timber6;
 
 public class NavigationUtils {
 
-    public static void navigateToNowplaying(Context context, boolean withAnimations) {
-
-        final Intent intent = new Intent(context, NowPlayingActivity.class);
-        context.startActivity(intent);
-    }
-
     public static Intent getNowPlayingIntent(Context context) {
-
         final Intent intent = new Intent(context, MainActivity.class);
         intent.setAction(Constants.NAVIGATE_NOWPLAYING);
         return intent;
     }
 
     public static Fragment getFragmentForNowplayingID() {
-        return new Timber6();
+        return ;
     }
 
 }
