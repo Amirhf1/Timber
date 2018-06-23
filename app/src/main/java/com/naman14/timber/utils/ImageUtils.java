@@ -20,10 +20,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v8.renderscript.RenderScript;
-import android.widget.ImageView;
-
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

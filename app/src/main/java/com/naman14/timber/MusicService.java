@@ -74,7 +74,6 @@ import com.naman14.timber.utils.Constants;
 import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.utils.TimberUtils.IdType;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;

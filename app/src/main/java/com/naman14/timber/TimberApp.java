@@ -16,15 +16,6 @@ package com.naman14.timber;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.naman14.timber.utils.PreferencesUtility;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.utils.L;
-
-import java.io.IOException;
-import java.io.InputStream;
-
 public class TimberApp extends MultiDexApplication {
 
     private static TimberApp mInstance;
@@ -37,22 +28,6 @@ public class TimberApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
-        ImageLoaderConfiguration localImageLoaderConfiguration = new ImageLoaderConfiguration.Builder(this).imageDownloader(new BaseImageDownloader(this) {
-            PreferencesUtility prefs = PreferencesUtility.getInstance(TimberApp.this);
-
-            @Override
-            protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
-                if (prefs.loadArtistAndAlbumImages())
-                    return super.getStreamFromNetwork(imageUri, extra);
-                throw new IOException();
-            }
-        }).build();
-
-        ImageLoader.getInstance().init(localImageLoaderConfiguration);
-        L.writeLogs(false);
-        L.disableLogging();
-        L.writeDebugLogs(false);
     }
 
 
