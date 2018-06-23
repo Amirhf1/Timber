@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.activities.NowPlayingActivity;
 import com.naman14.timber.models.Song;
-import com.naman14.timber.utils.NavigationUtils;
 import com.naman14.timber.widgets.BubbleTextGetter;
 
 import java.util.ArrayList;

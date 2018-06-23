@@ -30,15 +30,6 @@ import java.io.ByteArrayOutputStream;
 
 public class ImageUtils {
 
-    public static void loadAlbumArtIntoView(final long albumId, final ImageView view) {
-        loadAlbumArtIntoView(albumId, view, new SimpleImageLoadingListener());
-    }
-
-    public static void loadAlbumArtIntoView(final long albumId, final ImageView view,
-                                            final ImageLoadingListener listener) {
-
-    }
-
     public static Drawable createBlurredImageFromBitmap(Bitmap bitmap, Context context, int inSampleSize) {
 
         RenderScript rs = RenderScript.create(context);
