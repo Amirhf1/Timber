@@ -57,7 +57,6 @@ public class MainActivity extends BaseActivity {
             Fragment fragment = new MainFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, fragment).commitAllowingStateLoss();
-
         }
     };
 
@@ -130,6 +129,7 @@ public class MainActivity extends BaseActivity {
                     FrameLayout.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
 
+            /*
             FrameLayout contentRoot = findViewById(R.id.content_root);
             contentRoot.addView(LayoutInflater.from(this)
                     .inflate(R.layout.fragment_cast_mini_controller, null), params);
@@ -140,6 +140,7 @@ public class MainActivity extends BaseActivity {
                     startActivity(new Intent(MainActivity.this, ExpandedControllerActivity.class));
                 }
             });
+            */
         }
 
     }
@@ -173,25 +174,6 @@ public class MainActivity extends BaseActivity {
                 Nammu.askForPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, permissionReadstorageCallback);
             }
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                super.onBackPressed();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -243,10 +225,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void hideCastMiniController() {
-
         findViewById(R.id.castMiniController).setVisibility(View.GONE);
         findViewById(R.id.quickcontrols_container).setVisibility(View.VISIBLE);
-
         panelLayout.showPanel();
     }
 }
