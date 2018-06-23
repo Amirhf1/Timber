@@ -82,10 +82,6 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.TreeSet;
 
-import de.Maxr1998.trackselectorlib.ModNotInstalledException;
-import de.Maxr1998.trackselectorlib.NotificationHelper;
-import de.Maxr1998.trackselectorlib.TrackItem;
-
 @SuppressLint("NewApi")
 public class MusicService extends Service {
     public static final String PLAYSTATE_CHANGED = "com.naman14.timber.playstatechanged";
@@ -518,10 +514,12 @@ public class MusicService extends Service {
 
         if (D) Log.d(TAG, "handleCommandIntent: action = " + action + ", command = " + command);
 
+        /*
         if (NotificationHelper.checkIntent(intent)) {
             goToPosition(mPlayPos + NotificationHelper.getPosition(intent));
             return;
         }
+        */
 
         if (CMDNEXT.equals(command) || NEXT_ACTION.equals(action)) {
             gotoNext(true);
@@ -1284,15 +1282,10 @@ public class MusicService extends Service {
             builder.setColorized(true);
         }
 
-        Notification n = builder.build();
-
-        if (mActivateXTrackSelector) {
-            addXTrackSelector(n);
-        }
-
-        return n;
+        return builder.build();
     }
 
+    /*
     private void addXTrackSelector(Notification n) {
         if (NotificationHelper.isSupported(n)) {
             StringBuilder selection = new StringBuilder();
@@ -1323,6 +1316,7 @@ public class MusicService extends Service {
             }
         }
     }
+    */
 
     private final PendingIntent retrievePlaybackAction(final String action) {
         final ComponentName serviceName = new ComponentName(this, MusicService.class);
