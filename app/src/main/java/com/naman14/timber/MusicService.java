@@ -69,7 +69,6 @@ import com.naman14.timber.activities.MainActivity;
 import com.naman14.timber.helpers.MediaButtonIntentReceiver;
 import com.naman14.timber.helpers.MusicPlaybackTrack;
 import com.naman14.timber.provider.MusicPlaybackState;
-import com.naman14.timber.provider.SongPlayCount;
 import com.naman14.timber.utils.Constants;
 import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
@@ -228,7 +227,6 @@ public class MusicService extends Service {
     private MusicPlaybackState mPlaybackStateStore;
     private boolean mShowAlbumArtOnLockscreen;
     private boolean mActivateXTrackSelector;
-    private SongPlayCount mSongPlayCount;
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
 
         @Override
@@ -288,8 +286,6 @@ public class MusicService extends Service {
 
         // gets a pointer to the playback state store
         mPlaybackStateStore = MusicPlaybackState.getInstance(this);
-        mSongPlayCount = SongPlayCount.getInstance(this);
-
 
         mHandlerThread = new HandlerThread("MusicPlayerHandler",
                 android.os.Process.THREAD_PRIORITY_BACKGROUND);
@@ -1114,7 +1110,6 @@ public class MusicService extends Service {
         sendStickyBroadcast(musicIntent);
 
         if (what.equals(META_CHANGED)) {
-            mSongPlayCount.bumpSongCount(getAudioId());
 
         } else if (what.equals(QUEUE_CHANGED)) {
             saveQueue(true);
