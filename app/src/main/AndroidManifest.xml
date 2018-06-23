@@ -45,7 +45,7 @@
         </activity>
 
         <activity
-            android:name=".activities.NowPlayingActivity"
+            android:name=".activities.NowPlayingMusicActivity"
             android:theme="@style/AppTheme.FullScreen.Light" />
 
         <receiver android:name=".helpers.MediaButtonIntentReceiver">

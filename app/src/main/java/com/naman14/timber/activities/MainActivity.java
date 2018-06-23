@@ -14,7 +14,6 @@
 
 package com.naman14.timber.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,31 +23,22 @@ import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.fragments.MainFragment;
 import com.naman14.timber.slidinguppanel.SlidingUpPanelLayout;
-import com.naman14.timber.utils.Constants;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseMusicActivity {
 
     private SlidingUpPanelLayout panelLayout;
     private String action;
-    private Map<String, Runnable> navigationMap = new HashMap<String, Runnable>();
 
-    private Runnable navigateLibrary = new Runnable() {
-        public void run() {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new MainFragment())
-                    .commitAllowingStateLoss();
-        }
-    };
+    private void navigateLibrary() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new MainFragment())
+                .commitAllowingStateLoss();
+    }
 
-    private Runnable navigateNowplaying = new Runnable() {
-        public void run() {
-            navigateLibrary.run();
-            startActivity(new Intent(MainActivity.this, NowPlayingActivity.class));
-        }
-    };
+    private void navigateNowplaying() {
+        navigateLibrary();
+        startActivity(new Intent(MainActivity.this, NowPlayingMusicActivity.class));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,14 +48,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigationMap.put(Constants.NAVIGATE_LIBRARY, navigateLibrary);
-        navigationMap.put(Constants.NAVIGATE_NOWPLAYING, navigateNowplaying);
-
         panelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
         setPanelSlideListeners(panelLayout);
 
-        loadEverything();
+        navigateLibrary();
+        initQuickControls();
 
         addBackstackListener();
 
@@ -77,7 +65,7 @@ public class MainActivity extends BaseActivity {
                     MusicPlayer.clearQueue();
                     MusicPlayer.openFile(getIntent().getData().getPath());
                     MusicPlayer.playOrPause();
-                    navigateNowplaying.run();
+                    navigateNowplaying();
                 }
             }, 350);
         }
@@ -86,17 +74,6 @@ public class MainActivity extends BaseActivity {
             panelLayout.hidePanel();
         }
 
-    }
-
-    private void loadEverything() {
-        Runnable navigation = navigationMap.get(action);
-        if (navigation != null) {
-            navigation.run();
-        } else {
-            navigateLibrary.run();
-        }
-
-        new initQuickControls().execute("");
     }
 
     @Override

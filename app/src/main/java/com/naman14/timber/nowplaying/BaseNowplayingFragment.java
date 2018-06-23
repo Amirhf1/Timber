@@ -32,13 +32,12 @@ import android.widget.TextView;
 
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.activities.BaseActivity;
+import com.naman14.timber.activities.BaseMusicActivity;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.timely.TimelyView;
 import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.PlayPauseButton;
-import com.naman14.timber.widgets.PlayPauseDrawable;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -386,7 +385,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     }
 
     public void setMusicStateListener() {
-        ((BaseActivity) getActivity()).setMusicStateListenerListener(this);
+        ((BaseMusicActivity) getActivity()).setMusicStateListenerListener(this);
     }
 
     public void doAlbumArtStuff(Bitmap loadedImage) {

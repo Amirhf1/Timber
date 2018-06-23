@@ -15,7 +15,6 @@
 
 package com.naman14.timber;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;

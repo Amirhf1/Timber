@@ -33,8 +33,8 @@ import android.widget.TextView;
 
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.activities.BaseActivity;
-import com.naman14.timber.activities.NowPlayingActivity;
+import com.naman14.timber.activities.BaseMusicActivity;
+import com.naman14.timber.activities.NowPlayingMusicActivity;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.utils.ImageUtils;
 import com.naman14.timber.utils.PreferencesUtility;
@@ -210,13 +210,13 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
         previous.setVisibility(View.GONE);
         next.setVisibility(View.GONE);
 
-        ((BaseActivity) getActivity()).setMusicStateListenerListener(this);
+        ((BaseMusicActivity) getActivity()).setMusicStateListenerListener(this);
 
         if (PreferencesUtility.getInstance(getActivity()).isGesturesEnabled()) {
             new SlideTrackSwitcher() {
                 @Override
                 public void onClick() {
-                    startActivity(NowPlayingActivity.newInstance(getContext()));
+                    startActivity(NowPlayingMusicActivity.newInstance(getContext()));
                 }
             }.attach(rootView.findViewById(R.id.root_view));
         }

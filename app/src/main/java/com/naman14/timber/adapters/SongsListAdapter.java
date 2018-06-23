@@ -20,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.naman14.timber.MusicPlayer;
-import com.naman14.timber.activities.NowPlayingActivity;
+import com.naman14.timber.activities.NowPlayingMusicActivity;
 import com.naman14.timber.models.Song;
 import com.naman14.timber.widgets.BubbleTextGetter;
 
@@ -77,7 +77,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
                 MusicPlayer.openSong(items.get(adapterPosition));
 
                 if (navigateNowPlaying) {
-                    v.getContext().startActivity(NowPlayingActivity.newInstance(v.getContext()));
+                    v.getContext().startActivity(NowPlayingMusicActivity.newInstance(v.getContext()));
                 }
 
                 new Handler().postDelayed(new Runnable() {
