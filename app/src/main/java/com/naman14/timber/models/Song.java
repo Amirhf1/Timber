@@ -23,7 +23,7 @@ public class Song {
     private final int id;
     private final String title;
     private final int rawId;
-    private final int image = R.drawable.ic_audiotrack_dark;
+    private final int image = R.drawable.ic_empty_music2;
     private final int duration;
     private final String subTitle = "Fiches Plateau Moto";
 
