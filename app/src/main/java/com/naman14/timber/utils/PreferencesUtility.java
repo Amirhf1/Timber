@@ -34,19 +34,11 @@ public final class PreferencesUtility {
     private static final String TOGGLE_XPOSED_TRACKSELECTOR = "toggle_xposed_trackselector";
     public static final String GESTURES = "gestures";
 
-    private static final String SHOW_LOCKSCREEN_ALBUMART = "show_albumart_lockscreen";
-    private static final String ARTIST_ALBUM_IMAGE = "artist_album_image";
-    private static final String ARTIST_ALBUM_IMAGE_MOBILE = "artist_album_image_mobile";
-    private static final String ALWAYS_LOAD_ALBUM_IMAGES_LASTFM = "always_load_album_images_lastfm";
-
     private static PreferencesUtility sInstance;
 
     private static SharedPreferences mPreferences;
-    private static Context context;
-    private ConnectivityManager connManager = null;
 
     public PreferencesUtility(final Context context) {
-        this.context = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
