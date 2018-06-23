@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.dataloaders.SongLoader;
+import com.naman14.qcm.SongLoader;
 import com.naman14.timber.models.Song;
 import com.naman14.timber.widgets.CircleImageView;
 

@@ -1,4 +1,4 @@
-package com.naman14.timber.adapters;
+package com.naman14.qcm.adapters;
 
 import android.graphics.Color;
 import android.support.annotation.Nullable;
@@ -12,10 +12,7 @@ import android.widget.TextView;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.models.Song;
-import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.MusicVisualizer;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class SongViewHolder extends RecyclerView.ViewHolder {
 

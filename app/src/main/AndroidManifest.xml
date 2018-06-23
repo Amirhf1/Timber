@@ -23,7 +23,7 @@
         tools:replace="android:allowBackup, android:label">
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.MainMusicActivity"
             android:label="Timber${appNameSuffix}"
             android:screenOrientation="portrait">
             <intent-filter>

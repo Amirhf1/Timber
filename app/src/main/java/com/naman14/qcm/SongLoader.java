@@ -12,7 +12,7 @@
  * See the GNU General Public License for more details.
  */
 
-package com.naman14.timber.dataloaders;
+package com.naman14.qcm;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;

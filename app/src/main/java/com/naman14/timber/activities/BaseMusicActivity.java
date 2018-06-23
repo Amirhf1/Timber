@@ -206,7 +206,7 @@ public class BaseMusicActivity extends AppCompatActivity implements ServiceConne
 
     public void initQuickControls() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.quickcontrols_container, new QuickControlsFragment())
+                .replace(R.id.quickcontrols_container, QuickControlsFragment.newInstance())
                 .commitAllowingStateLoss();
     }
 

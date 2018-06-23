@@ -330,6 +330,10 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
         updateState();
     }
 
+    public static Fragment newInstance() {
+        return new QuickControlsFragment();
+    }
+
     private class setBlurredAlbumArt extends AsyncTask<Bitmap, Void, Drawable> {
 
         @Override

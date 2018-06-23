@@ -21,10 +21,10 @@ import android.support.v4.app.FragmentManager;
 
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
-import com.naman14.timber.fragments.SongsFragment;
+import com.naman14.qcm.SongsFragment;
 import com.naman14.timber.slidinguppanel.SlidingUpPanelLayout;
 
-public class MainActivity extends BaseMusicActivity {
+public class MainMusicActivity extends BaseMusicActivity {
 
     private SlidingUpPanelLayout panelLayout;
     private String action;
@@ -37,7 +37,7 @@ public class MainActivity extends BaseMusicActivity {
 
     private void navigateNowplaying() {
         navigateLibrary();
-        startActivity(new Intent(MainActivity.this, NowPlayingMusicActivity.class));
+        startActivity(new Intent(MainMusicActivity.this, NowPlayingMusicActivity.class));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MainActivity extends BaseMusicActivity {
         action = getIntent().getAction();
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_music_main);
 
         panelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 

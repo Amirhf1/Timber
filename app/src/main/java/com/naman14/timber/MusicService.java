@@ -65,7 +65,7 @@ import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.naman14.timber.activities.MainActivity;
+import com.naman14.timber.activities.MainMusicActivity;
 import com.naman14.timber.helpers.MediaButtonIntentReceiver;
 import com.naman14.timber.helpers.MusicPlaybackTrack;
 import com.naman14.timber.provider.MusicPlaybackState;
@@ -1243,7 +1243,7 @@ public class MusicService extends Service {
         int playButtonResId = isPlaying
                 ? R.drawable.ic_pause_white_36dp : R.drawable.ic_play_white_36dp;
 
-        final Intent nowPlayingIntent = new Intent(this, MainActivity.class)
+        final Intent nowPlayingIntent = new Intent(this, MainMusicActivity.class)
                 .setAction(Constants.NAVIGATE_NOWPLAYING);
         PendingIntent clickIntent = PendingIntent.getActivity(this, 0, nowPlayingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Bitmap artwork;

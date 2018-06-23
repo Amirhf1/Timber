@@ -12,7 +12,7 @@
  * See the GNU General Public License for more details.
  */
 
-package com.naman14.timber.adapters;
+package com.naman14.qcm.adapters;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;

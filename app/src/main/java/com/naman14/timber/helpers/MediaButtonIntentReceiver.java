@@ -23,7 +23,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.naman14.timber.MusicService;
-import com.naman14.timber.activities.MainActivity;
+import com.naman14.timber.activities.MainMusicActivity;
 import com.naman14.timber.utils.PreferencesUtility;
 
 /**
@@ -62,7 +62,7 @@ public class MediaButtonIntentReceiver extends WakefulBroadcastReceiver {
                     if (!mLaunched) {
                         final Context context = (Context) msg.obj;
                         final Intent i = new Intent();
-                        i.setClass(context, MainActivity.class);
+                        i.setClass(context, MainMusicActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
                         mLaunched = true;
