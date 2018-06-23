@@ -1,6 +1,5 @@
 package com.naman14.qcm.adapters;
 
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,13 +11,11 @@ import android.widget.TextView;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.models.Song;
-import com.naman14.timber.widgets.MusicVisualizer;
 
 public class SongViewHolder extends RecyclerView.ViewHolder {
 
     protected TextView title, artist;
     protected ImageView albumArt;
-    private MusicVisualizer visualizer;
 
     @Nullable
     private ItemClickedListener itemClickedListener;
@@ -28,7 +25,6 @@ public class SongViewHolder extends RecyclerView.ViewHolder {
         this.title = (TextView) view.findViewById(R.id.song_title);
         this.artist = (TextView) view.findViewById(R.id.song_artist);
         this.albumArt = (ImageView) view.findViewById(R.id.albumArt);
-        visualizer = (MusicVisualizer) view.findViewById(R.id.visualizer);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,15 +51,10 @@ public class SongViewHolder extends RecyclerView.ViewHolder {
 
         if (MusicPlayer.getCurrentAudioId() == localItem.getId()) {
             title.setTextColor(itemView.getContext().getResources().getColor(R.color.colorCurrentSong));
-            if (MusicPlayer.isPlaying()) {
-                visualizer.setColor(itemView.getContext().getResources().getColor(R.color.colorCurrentSong));
-                visualizer.setVisibility(View.VISIBLE);
-            } else {
-                visualizer.setVisibility(View.GONE);
-            }
+            artist.setTextColor(itemView.getContext().getResources().getColor(R.color.colorCurrentSong));
         } else {
-            visualizer.setVisibility(View.GONE);
-            title.setTextColor(Color.parseColor("#3E3E3E"));
+            title.setTextColor(itemView.getContext().getResources().getColor(R.color.colorNotCurrentSong));
+            artist.setTextColor(itemView.getContext().getResources().getColor(R.color.colorNotCurrentSong));
         }
     }
 
