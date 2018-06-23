@@ -73,32 +73,5 @@ public final class PreferencesUtility {
         return mPreferences.getBoolean(GESTURES, true);
     }
 
-    public boolean getSetAlbumartLockscreen() {
-        return mPreferences.getBoolean(SHOW_LOCKSCREEN_ALBUMART, true);
-    }
-
-    public void updateService(Bundle extras) {
-        if(!MusicPlayer.isPlaybackServiceConnected())return;
-        final Intent intent = new Intent(context, MusicService.class);
-        intent.setAction(MusicService.UPDATE_PREFERENCES);
-        intent.putExtras(extras);
-        context.startService(intent);
-    }
-
-    public boolean loadArtistAndAlbumImages() {
-        if (mPreferences.getBoolean(ARTIST_ALBUM_IMAGE, true)) {
-            if (!mPreferences.getBoolean(ARTIST_ALBUM_IMAGE_MOBILE, true)) {
-                if (connManager == null) connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo ni = connManager.getActiveNetworkInfo();
-                return ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public boolean alwaysLoadAlbumImagesFromLastfm() {
-        return mPreferences.getBoolean(ALWAYS_LOAD_ALBUM_IMAGES_LASTFM, false);
-    }
 }
 
