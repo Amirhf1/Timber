@@ -116,28 +116,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         }
     };
     private boolean duetoplaypause = false;
-    private final View.OnClickListener mButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            duetoplaypause = true;
-            if (!mPlayPause.isPlayed()) {
-                mPlayPause.setPlayed(true);
-                mPlayPause.startAnimation();
-            } else {
-                mPlayPause.setPlayed(false);
-                mPlayPause.startAnimation();
-            }
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    MusicPlayer.playOrPause();
-                }
-            }, 200);
-
-
-        }
-    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -183,7 +161,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
 
         songtitle.setSelected(true);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         if (toolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
             final ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -236,8 +214,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
+                    new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             MusicPlayer.next();
@@ -267,7 +244,25 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
         }
 
         if (playPauseWrapper != null)
-            playPauseWrapper.setOnClickListener(mButtonListener);
+            playPauseWrapper.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    duetoplaypause = true;
+                    if (!mPlayPause.isPlayed()) {
+                        mPlayPause.setPlayed(true);
+                        mPlayPause.startAnimation();
+                    } else {
+                        mPlayPause.setPlayed(false);
+                        mPlayPause.startAnimation();
+                    }
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            MusicPlayer.playOrPause();
+                        }
+                    }, 200);
+                }
+            });
     }
 
 

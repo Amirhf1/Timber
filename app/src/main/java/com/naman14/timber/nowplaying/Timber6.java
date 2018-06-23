@@ -32,8 +32,7 @@ public class Timber6 extends BaseNowplayingFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(
-                R.layout.fragment_timber6, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_timber6, container, false);
 
         setMusicStateListener();
         setSongDetails(rootView);
