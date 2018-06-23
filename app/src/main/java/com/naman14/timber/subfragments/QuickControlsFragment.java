@@ -42,8 +42,6 @@ import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.SlideTrackSwitcher;
 import com.naman14.timber.widgets.PlayPauseButton;
 
-import net.steamcrafted.materialiconlib.MaterialIconView;
-
 public class QuickControlsFragment extends Fragment implements MusicStateListener {
 
 
@@ -57,7 +55,7 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
     private ImageView mAlbumArt, mBlurredArt;
     private View rootView;
     private View playPauseWrapper, playPauseWrapperExpanded;
-    private MaterialIconView previous, next;
+    private View previous, next;
     private boolean duetoplaypause = false;
     private boolean fragmentPaused = false;
 
@@ -146,8 +144,8 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
         mArtistExpanded = (TextView) rootView.findViewById(R.id.song_artist);
         mAlbumArt = (ImageView) rootView.findViewById(R.id.album_art_nowplayingcard);
         mBlurredArt = (ImageView) rootView.findViewById(R.id.blurredAlbumart);
-        next = (MaterialIconView) rootView.findViewById(R.id.next);
-        previous = (MaterialIconView) rootView.findViewById(R.id.previous);
+        next = (View) rootView.findViewById(R.id.next);
+        previous = (View) rootView.findViewById(R.id.previous);
         topContainer = rootView.findViewById(R.id.topContainer);
 
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mProgress.getLayoutParams();

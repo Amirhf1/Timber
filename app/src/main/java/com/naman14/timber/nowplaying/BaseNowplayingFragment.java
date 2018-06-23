@@ -39,8 +39,6 @@ import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.PlayPauseButton;
 
-import net.steamcrafted.materialiconlib.MaterialIconView;
-
 import java.security.InvalidParameterException;
 
 public class BaseNowplayingFragment extends Fragment implements MusicStateListener {
@@ -48,7 +46,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     public ImageView albumart;
     public int accentColor;
     boolean fragmentPaused = false;
-    private MaterialIconView previous, next;
+    private View previous, next;
     private PlayPauseButton mPlayPause;
     private View playPauseWrapper;
     private int overflowcounter = 0;
@@ -142,8 +140,8 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     public void setSongDetails(View view) {
 
         albumart = (ImageView) view.findViewById(R.id.album_art);
-        next = (MaterialIconView) view.findViewById(R.id.next);
-        previous = (MaterialIconView) view.findViewById(R.id.previous);
+        next = (ImageView) view.findViewById(R.id.next);
+        previous = (ImageView) view.findViewById(R.id.previous);
         mPlayPause = (PlayPauseButton) view.findViewById(R.id.playpause);
         playPauseWrapper = view.findViewById(R.id.playpausewrapper);
 
@@ -226,8 +224,7 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
             previous.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
+                    new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             MusicPlayer.previous(getActivity(), false);
