@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -15,7 +16,6 @@ import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.qcm.SongLoader;
 import com.naman14.timber.models.Song;
-import com.naman14.timber.widgets.CircleImageView;
 
 /**
  * Created by naman on 22/02/17.
@@ -24,7 +24,7 @@ import com.naman14.timber.widgets.CircleImageView;
 public class Timber6 extends BaseNowplayingFragment {
 
     TextView nextSong;
-    CircleImageView nextArt;
+    ImageView nextArt;
 
     public static Fragment newInstance(){
         return new Timber6();
@@ -43,7 +43,7 @@ public class Timber6 extends BaseNowplayingFragment {
         ((SeekBar) rootView.findViewById(R.id.song_progress)).getThumb().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP));
 
         nextSong = (TextView) rootView.findViewById(R.id.title_next);
-        nextArt = (CircleImageView) rootView.findViewById(R.id.album_art_next);
+        nextArt = (ImageView) rootView.findViewById(R.id.album_art_next);
 
         rootView.findViewById(R.id.nextView).setVisibility(View.GONE);
 
