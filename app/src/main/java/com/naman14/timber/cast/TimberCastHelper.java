@@ -34,15 +34,15 @@ public class TimberCastHelper  {
             return;
         }
 
-        String songUrl = baseUrl.toString() + "/song?id=" + song.id;
-        String albumArtUrl = baseUrl.toString() + "/albumart?id=" + song.albumId;
+        String songUrl = baseUrl.toString() + "/song?id=" + song.getId();
+        String albumArtUrl = baseUrl.toString() + "/albumart?id=" + song.getImage();
 
         MediaMetadata musicMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK);
 
-        musicMetadata.putString(MediaMetadata.KEY_TITLE, song.title);
-        musicMetadata.putString(MediaMetadata.KEY_ARTIST, song.artistName);
-        musicMetadata.putString(MediaMetadata.KEY_ALBUM_TITLE, song.albumName);
-        musicMetadata.putInt(MediaMetadata.KEY_TRACK_NUMBER, song.trackNumber);
+        musicMetadata.putString(MediaMetadata.KEY_TITLE, song.getTitle());
+        //musicMetadata.putString(MediaMetadata.KEY_ARTIST, song.artistName);
+        //musicMetadata.putString(MediaMetadata.KEY_ALBUM_TITLE, song.albumName);
+        //musicMetadata.putInt(MediaMetadata.KEY_TRACK_NUMBER, song.trackNumber);
         musicMetadata.addImage(new WebImage(Uri.parse(albumArtUrl)));
 
         try {
@@ -50,7 +50,7 @@ public class TimberCastHelper  {
                     .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                     .setContentType("audio/mpeg")
                     .setMetadata(musicMetadata)
-                    .setStreamDuration(song.duration)
+                    .setStreamDuration(song.getDuration())
                     .build();
             RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
             remoteMediaClient.load(mediaInfo, true, 0);

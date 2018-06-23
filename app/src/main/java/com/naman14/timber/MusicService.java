@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -134,7 +135,7 @@ public class MusicService extends Service {
     public static final int REPEAT_ALL = 2;
     public static final int MAX_HISTORY_SIZE = 1000;
     private static final String TAG = "MusicPlaybackService";
-    private static final boolean D = false;
+    private static final boolean D = true;
     private static final String SHUTDOWN = "com.naman14.timber.shutdown";
     private static final int IDCOLIDX = 0;
     private static final int TRACK_ENDED = 1;
@@ -244,6 +245,8 @@ public class MusicService extends Service {
         }
     };
     private ContentObserver mMediaStoreObserver;
+
+    private String tackName = "test";
 
     @Override
     public IBinder onBind(final Intent intent) {
@@ -1438,6 +1441,39 @@ public class MusicService extends Service {
         }
     }
 
+    private boolean openRaw(String title, int rawId) {
+        if (D) Log.d(TAG, "openFile: rawId = " + rawId);
+        synchronized (this) {
+            if (rawId < 0) {
+                return false;
+            }
+
+            this.tackName = title;
+
+            mFileToPlay = "raw"+rawId;
+            mPlayer.setDataSource(rawId);
+
+            if (mPlayer.isInitialized()) {
+                mOpenFailedCounter = 0;
+                Log.e("FLO", "mPlayer.isInitialized(), return true");
+
+                return true;
+            }
+
+            String trackName = getTrackName();
+            if (TextUtils.isEmpty(trackName)) {
+                trackName = "test";
+            }
+
+            Log.e("FLO", "sendErrorMessage(trackname");
+
+            sendErrorMessage(trackName);
+
+            stop(true);
+            return false;
+        }
+    }
+
     public boolean openFile(final String path) {
         if (D) Log.d(TAG, "openFile: path = " + path);
         synchronized (this) {
@@ -1712,71 +1748,28 @@ public class MusicService extends Service {
 
     public String getTrackName() {
         synchronized (this) {
-            if (mCursor == null) {
-                return null;
-            }
-            return mCursor.getString(mCursor.getColumnIndexOrThrow(AudioColumns.TITLE));
+            return tackName;
         }
     }
 
     public String getGenreName() {
-        synchronized (this) {
-            if (mCursor == null || mPlayPos < 0 || mPlayPos >= mPlaylist.size()) {
-                return null;
-            }
-            String[] genreProjection = {MediaStore.Audio.Genres.NAME};
-            Uri genreUri = MediaStore.Audio.Genres.getContentUriForAudioId("external",
-                    (int) mPlaylist.get(mPlayPos).mId);
-            Cursor genreCursor = getContentResolver().query(genreUri, genreProjection,
-                    null, null, null);
-            if (genreCursor != null) {
-                try {
-                    if (genreCursor.moveToFirst()) {
-                        return genreCursor.getString(
-                                genreCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME));
-                    }
-                } finally {
-                    genreCursor.close();
-                }
-            }
-            return null;
-        }
+        return "";
     }
 
     public String getArtistName() {
-        synchronized (this) {
-            if (mCursor == null) {
-                return null;
-            }
-            return mCursor.getString(mCursor.getColumnIndexOrThrow(AudioColumns.ARTIST));
-        }
+        return "";
     }
 
     public String getAlbumArtistName() {
-        synchronized (this) {
-            if (mAlbumCursor == null) {
-                return null;
-            }
-            return mAlbumCursor.getString(mAlbumCursor.getColumnIndexOrThrow(AlbumColumns.ARTIST));
-        }
+        return "";
     }
 
     public long getAlbumId() {
-        synchronized (this) {
-            if (mCursor == null) {
-                return -1;
-            }
-            return mCursor.getLong(mCursor.getColumnIndexOrThrow(AudioColumns.ALBUM_ID));
-        }
+        return -1;
     }
 
     public long getArtistId() {
-        synchronized (this) {
-            if (mCursor == null) {
-                return -1;
-            }
-            return mCursor.getLong(mCursor.getColumnIndexOrThrow(AudioColumns.ARTIST_ID));
-        }
+        return -1;
     }
 
     public long getAudioId() {
@@ -2430,6 +2423,21 @@ public class MusicService extends Service {
             }
         }
 
+        public void setDataSource(final int rawId) {
+            try {
+                mIsInitialized = setDataSourceImpl(mCurrentMediaPlayer, rawId);
+                Log.e("FLO", "mIsInitialized : "+mIsInitialized);
+
+                if (mIsInitialized) {
+                    setNextDataSource(null);
+                }
+            } catch (IllegalStateException e) {
+                Log.e("FLO", "IllegalStateException", e);
+
+                e.printStackTrace();
+            }
+        }
+
 
         private boolean setDataSourceImpl(final MediaPlayer player, final String path) {
             try {
@@ -2452,6 +2460,41 @@ public class MusicService extends Service {
             }
             player.setOnCompletionListener(this);
             player.setOnErrorListener(this);
+            return true;
+        }
+
+        private boolean setDataSourceImpl(final MediaPlayer player, final int rawId) {
+            try {
+                final MusicService musicService = mService.get();
+
+                Log.d("FLO", "musicService = "+musicService);
+                if (musicService != null) {
+                    player.reset();
+                    player.setOnPreparedListener(null);
+
+
+                    final AssetFileDescriptor afd = musicService.getApplicationContext().getResources().openRawResourceFd(rawId);
+                    player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
+                    afd.close();
+
+                    player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+                    player.prepare();
+                } else {
+                    Log.e("FLO", "error serive null");
+                    return false;
+                }
+            } catch (final IOException todo) {
+                Log.e("FLO", "error", todo);
+                return false;
+            } catch (final IllegalArgumentException todo) {
+                Log.e("FLO", "error", todo);
+
+                return false;
+            }
+            player.setOnCompletionListener(this);
+            player.setOnErrorListener(this);
+
             return true;
         }
 
@@ -2606,6 +2649,11 @@ public class MusicService extends Service {
         @Override
         public void openFile(final String path) throws RemoteException {
             mService.get().openFile(path);
+        }
+
+        @Override
+        public void openRaw(String title, int rawId) throws RemoteException {
+            mService.get().openRaw(title, rawId);
         }
 
         @Override

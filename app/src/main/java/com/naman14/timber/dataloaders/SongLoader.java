@@ -14,14 +14,12 @@
 
 package com.naman14.timber.dataloaders;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
-import android.provider.BaseColumns;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
 import com.naman14.timber.R;
@@ -33,75 +31,27 @@ import java.util.List;
 
 public class SongLoader {
 
-    private static final long[] sEmptyList = new long[0];
+    private static final List<Song> songs = new ArrayList<>();
 
     public static List<Song> getSongsForAssets(Context context){
-        return Arrays.asList(
-                songFromFile(context, R.raw.fiche1)
-        );
+        if(songs.isEmpty()){
+            songs.addAll(
+                    Arrays.asList(
+                            songFromFile(context, "Fiche 1", R.raw.fiche1)
+                    )
+            );
+        }
+        return songs;
     }
 
-    public static ArrayList<Song> getSongsForCursor(Cursor cursor) {
-        ArrayList arrayList = new ArrayList();
-        if ((cursor != null) && (cursor.moveToFirst()))
-            do {
-                long id = cursor.getLong(0);
-                String title = cursor.getString(1);
-                String artist = cursor.getString(2);
-                String album = cursor.getString(3);
-                int duration = cursor.getInt(4);
-                int trackNumber = cursor.getInt(5);
-                long artistId = cursor.getInt(6);
-                long albumId = cursor.getLong(7);
-
-                arrayList.add(new Song(id, albumId, artistId, title, artist, album, duration, trackNumber));
+    public static Song getSongForID(Context context, long nextId) {
+        for (Song song : songs) {
+            if(song.getId() == nextId){
+                return song;
             }
-            while (cursor.moveToNext());
-        if (cursor != null)
-            cursor.close();
-        return arrayList;
-    }
-
-    public static Song getSongForCursor(Cursor cursor) {
-        Song song = new Song();
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            long id = cursor.getLong(0);
-            String title = cursor.getString(1);
-            String artist = cursor.getString(2);
-            String album = cursor.getString(3);
-            int duration = cursor.getInt(4);
-            int trackNumber = cursor.getInt(5);
-            long artistId = cursor.getInt(6);
-            long albumId = cursor.getLong(7);
-
-            song = new Song(id, albumId, artistId, title, artist, album, duration, trackNumber);
         }
-
-        if (cursor != null)
-            cursor.close();
-        return song;
+        return null;
     }
-
-    /*
-    public static Song getSongFromPath(String songPath, Context context) {
-        ContentResolver cr = context.getContentResolver();
-
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.DATA;
-        String[] selectionArgs = {songPath};
-        String[] projection = new String[]{"_id", "title", "artist", "album", "duration", "track", "artist_id", "album_id"};
-        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
-
-        Cursor cursor = cr.query(uri, projection, selection + "=?", selectionArgs, sortOrder);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            Song song = getSongForCursor(cursor);
-            cursor.close();
-            return song;
-        }
-        else return new Song();
-    }
-    */
 
     public static List<Song> getAllSongs(Context context) {
         return getSongsForAssets(context);
@@ -114,39 +64,17 @@ public class SongLoader {
 
     */
 
-    public static Song getSongForID(Context context, long id) {
-        return getSongForCursor(makeSongCursor(context, "_id=" + String.valueOf(id), null));
-    }
+    public static Song songFromFile(Context context, String name, int rawId) {
+        final AssetFileDescriptor afd = context.getResources().openRawResourceFd(rawId);
 
-    public static Cursor makeSongCursor(Context context, String selection, String[] paramArrayOfString) {
-        return makeSongCursor(context, selection, paramArrayOfString, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-    }
-
-    private static Cursor makeSongCursor(Context context, String selection, String[] paramArrayOfString, String sortOrder) {
-        String selectionStatement = "is_music=1 AND title != ''";
-
-        if (!TextUtils.isEmpty(selection)) {
-            selectionStatement = selectionStatement + " AND " + selection;
-        }
-        return context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new String[]{"_id", "title", "artist", "album", "duration", "track", "artist_id", "album_id"}, selectionStatement, paramArrayOfString, sortOrder);
-    }
-
-    public static Song songFromFile(Context context, int rawId) {
-        final AssetFileDescriptor afd=context.getResources().openRawResourceFd(rawId);
-
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        final MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         mmr.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
 
         return new Song(
-                -1,
-                -1,
-                -1,
-                mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE),
-                mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST),
-                mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM),
-                Integer.parseInt(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)),
-                0
+                rawId,
+                name,
+                rawId,
+                Integer.parseInt(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION))
         );
     }
-
 }

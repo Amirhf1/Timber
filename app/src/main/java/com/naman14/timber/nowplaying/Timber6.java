@@ -11,14 +11,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.naman14.timber.MusicPlayer;
-import com.naman14.timber.MusicService;
 import com.naman14.timber.R;
 import com.naman14.timber.dataloaders.SongLoader;
 import com.naman14.timber.models.Song;
-import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.CircleImageView;
-
-import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 
 /**
  * Created by naman on 22/02/17.
@@ -56,8 +52,10 @@ public class Timber6 extends BaseNowplayingFragment {
         if (getActivity() != null) {
             long nextId = MusicPlayer.getNextAudioId();
             Song next = SongLoader.getSongForID(getActivity(), nextId);
-            nextSong.setText(next.title);
-            nextArt.setImageURI(TimberUtils.getAlbumArtUri(next.albumId));
+            if (next != null) {
+                nextSong.setText(next.getTitle());
+                nextArt.setImageResource(next.getImage());
+            }
         }
     }
 }

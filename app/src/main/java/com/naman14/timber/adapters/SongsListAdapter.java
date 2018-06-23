@@ -63,7 +63,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
     public String getTextToShowInBubble(final int pos) {
         if (items.size() == 0)
             return "";
-        final Character ch = items.get(pos).title.charAt(0);
+        final Character ch = items.get(pos).getTitle().charAt(0);
         if (Character.isDigit(ch)) {
             return "#";
         } else
@@ -74,7 +74,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongViewHolder> imple
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                MusicPlayer.playAll(items, adapterPosition);
+                MusicPlayer.openSong(items.get(adapterPosition));
 
                 if (navigateNowPlaying) {
                     NavigationUtils.navigateToNowplaying(v.getContext(), true);

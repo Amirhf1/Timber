@@ -228,7 +228,7 @@ public class MusicPlayer {
     private static long[] getSongIds(List<Song> items) {
         long[] ret = new long[items.size()];
         for (int i = 0; i < items.size(); i++) {
-            ret[i] = items.get(i).id;
+            ret[i] = items.get(i).getId();
         }
         return ret;
     }
@@ -342,6 +342,17 @@ public class MusicPlayer {
             try {
                 mService.openFile(path);
             } catch (final RemoteException ignored) {
+            }
+        }
+    }
+
+    public static final void openSong(final Song song) {
+        if (mService != null) {
+            try {
+                mService.openRaw(song.getTitle(), song.getRawId());
+                mService.play();
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
         }
     }

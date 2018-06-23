@@ -52,15 +52,11 @@ public class SongViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Song localItem) {
-        title.setText(localItem.title);
-        artist.setText(localItem.artistName);
+        title.setText(localItem.getTitle());
+        artist.setText(localItem.getSubTitle());
+        albumArt.setImageResource(localItem.getImage());
 
-        ImageLoader.getInstance().displayImage(TimberUtils.getAlbumArtUri(localItem.albumId).toString(),
-                albumArt, new DisplayImageOptions.Builder().cacheInMemory(true)
-                        .showImageOnLoading(R.drawable.ic_empty_music2)
-                        .resetViewBeforeLoading(true).build());
-
-        if (MusicPlayer.getCurrentAudioId() == localItem.id) {
+        if (MusicPlayer.getCurrentAudioId() == localItem.getId()) {
             title.setTextColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
             if (MusicPlayer.isPlaying()) {
                 visualizer.setColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
