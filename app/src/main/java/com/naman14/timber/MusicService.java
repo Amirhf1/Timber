@@ -71,7 +71,6 @@ import com.naman14.timber.helpers.MediaButtonIntentReceiver;
 import com.naman14.timber.helpers.MusicPlaybackTrack;
 import com.naman14.timber.provider.MusicPlaybackState;
 import com.naman14.timber.utils.Constants;
-import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.utils.TimberUtils.IdType;
 
@@ -355,8 +354,7 @@ public class MusicService extends Service {
         notifyChange(META_CHANGED);
         //Try to push LastFMCache
 
-        PreferencesUtility pref = PreferencesUtility.getInstance(this);
-        mActivateXTrackSelector = pref.getXPosedTrackselectorEnabled();
+        mActivateXTrackSelector = false;
     }
 
     @SuppressWarnings("deprecation")
@@ -557,9 +555,7 @@ public class MusicService extends Service {
         } else if (UPDATE_PREFERENCES.equals(action)) {
             onPreferencesUpdate(intent.getExtras());
         } else if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(action)) {
-            if (PreferencesUtility.getInstance(getApplicationContext()).pauseEnabledOnDetach()) {
-                pause();
-            }
+            pause();
         }
     }
 

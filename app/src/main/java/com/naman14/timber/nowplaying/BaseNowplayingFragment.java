@@ -35,7 +35,6 @@ import com.naman14.timber.R;
 import com.naman14.timber.activities.BaseMusicActivity;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.timely.TimelyView;
-import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.PlayPauseButton;
 
@@ -416,7 +415,6 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
     }
 
     protected void initGestures(View v) {
-        if (PreferencesUtility.getInstance(v.getContext()).isGesturesEnabled()) {
             /*
             new SlideTrackSwitcher() {
                 @Override
@@ -425,6 +423,5 @@ public class BaseNowplayingFragment extends Fragment implements MusicStateListen
                 }
             }.attach(v);
             */
-        }
     }
 }
