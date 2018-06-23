@@ -54,9 +54,9 @@ public class MainActivity extends BaseActivity {
 
     private Runnable navigateLibrary = new Runnable() {
         public void run() {
-            Fragment fragment = new MainFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment).commitAllowingStateLoss();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new MainFragment())
+                    .commitAllowingStateLoss();
         }
     };
 
@@ -174,8 +174,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
