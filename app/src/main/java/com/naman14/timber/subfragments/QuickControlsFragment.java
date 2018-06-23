@@ -127,7 +127,7 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_playback_controls, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_audio_playback_controls, container, false);
         this.rootView = rootView;
 
         mPlayPause = (PlayPauseButton) rootView.findViewById(R.id.play_pause);

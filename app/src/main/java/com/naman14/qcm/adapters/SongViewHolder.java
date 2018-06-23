@@ -36,7 +36,7 @@ public class SongViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static SongViewHolder buildFor(ViewGroup viewGroup) {
-        return new SongViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_song, viewGroup, false));
+        return new SongViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_audio, viewGroup, false));
     }
 
     public SongViewHolder setItemClickedListener(@Nullable ItemClickedListener itemClickedListener) {
