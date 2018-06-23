@@ -22,12 +22,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.media.AudioManager;
-import android.media.session.MediaSessionManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -35,31 +32,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.appthemeengine.ATE;
-import com.afollestad.appthemeengine.ATEActivity;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
-import com.google.android.gms.cast.framework.Session;
 import com.google.android.gms.cast.framework.SessionManager;
-import com.google.android.gms.cast.framework.SessionManagerListener;
-import com.google.android.gms.cast.framework.media.widget.ExpandedControllerActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.naman14.timber.ITimberService;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.MusicService;
 import com.naman14.timber.R;
-import com.naman14.timber.cast.SimpleSessionManagerListener;
-import com.naman14.timber.cast.WebServer;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.slidinguppanel.SlidingUpPanelLayout;
 import com.naman14.timber.subfragments.QuickControlsFragment;
-import com.naman14.timber.utils.Helpers;
-import com.naman14.timber.utils.NavigationUtils;
-import com.naman14.timber.utils.TimberUtils;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -71,52 +57,6 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
     private MusicPlayer.ServiceToken mToken;
     private PlaybackStatus mPlaybackStatus;
 
-    private CastSession mCastSession;
-    private SessionManager mSessionManager;
-    private final SessionManagerListener mSessionManagerListener =
-            new SessionManagerListenerImpl();
-    private WebServer castServer;
-
-    public boolean playServicesAvailable = false;
-
-    private class SessionManagerListenerImpl extends SimpleSessionManagerListener {
-        @Override
-        public void onSessionStarting(Session session) {
-            super.onSessionStarting(session);
-            startCastServer();
-        }
-
-        @Override
-        public void onSessionStarted(Session session, String sessionId) {
-            invalidateOptionsMenu();
-            mCastSession = mSessionManager.getCurrentCastSession();
-            showCastMiniController();
-        }
-        @Override
-        public void onSessionResumed(Session session, boolean wasSuspended) {
-            invalidateOptionsMenu();
-            mCastSession = mSessionManager.getCurrentCastSession();
-        }
-        @Override
-        public void onSessionEnded(Session session, int error) {
-            mCastSession = null;
-            hideCastMiniController();
-            stopCastServer();
-        }
-
-        @Override
-        public void onSessionResuming(Session session, String s) {
-            super.onSessionResuming(session, s);
-            startCastServer();
-        }
-
-        @Override
-        public void onSessionSuspended(Session session, int i) {
-            super.onSessionSuspended(session, i);
-            stopCastServer();
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,16 +66,6 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
         mPlaybackStatus = new PlaybackStatus(this);
         //make volume keys change multimedia volume even if music is not playing now
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-        try {
-            playServicesAvailable = GoogleApiAvailability
-                    .getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS;
-        } catch (Exception ignored) {
-
-        }
-
-        if (playServicesAvailable)
-            initCast();
     }
 
     @Override
@@ -159,18 +89,9 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onResume() {
-        if (playServicesAvailable) {
-            mCastSession = mSessionManager.getCurrentCastSession();
-            mSessionManager.addSessionManagerListener(mSessionManagerListener);
-        }
         //For Android 8.0+: service may get destroyed if in background too long
-        if(mService == null){
+        if (mService == null) {
             mToken = MusicPlayer.bindToService(this, this);
         }
         onMetaChanged();
@@ -178,24 +99,9 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (playServicesAvailable) {
-            mSessionManager.removeSessionManagerListener(mSessionManagerListener);
-            mCastSession = null;
-        }
-    }
-
-    @Override
     public void onServiceConnected(final ComponentName name, final IBinder service) {
         mService = ITimberService.Stub.asInterface(service);
         onMetaChanged();
-    }
-
-
-    private void initCast() {
-        CastContext castContext = CastContext.getSharedInstance(this);
-        mSessionManager = castContext.getSessionManager();
     }
 
     @Override
@@ -263,19 +169,6 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
         if (status != null) {
             mMusicStateListener.remove(status);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_cast, menu);
-
-        if (playServicesAvailable) {
-            CastButtonFactory.setUpMediaRouteButton(getApplicationContext(),
-                    menu,
-                    R.id.media_route_menu_item);
-        }
-
-        return true;
     }
 
     @Override
@@ -372,30 +265,4 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
         }
     }
 
-    public void showCastMiniController() {
-        //implement by overriding in activities
-    }
-
-    public void hideCastMiniController() {
-        //implement by overriding in activities
-    }
-
-    public CastSession getCastSession() {
-        return mCastSession;
-    }
-
-    private void startCastServer() {
-        castServer = new WebServer(this);
-        try {
-            castServer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void stopCastServer() {
-        if (castServer != null) {
-            castServer.stop();
-        }
-    }
 }

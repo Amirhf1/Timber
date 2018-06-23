@@ -193,21 +193,6 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         getSupportFragmentManager().findFragmentById(R.id.fragment_container).onActivityResult(requestCode, resultCode, data);
     }
-
-
-    @Override
-    public void showCastMiniController() {
-        findViewById(R.id.castMiniController).setVisibility(View.VISIBLE);
-        findViewById(R.id.quickcontrols_container).setVisibility(View.GONE);
-        panelLayout.hidePanel();
-    }
-
-    @Override
-    public void hideCastMiniController() {
-        findViewById(R.id.castMiniController).setVisibility(View.GONE);
-        findViewById(R.id.quickcontrols_container).setVisibility(View.VISIBLE);
-        panelLayout.showPanel();
-    }
 }
 
 
