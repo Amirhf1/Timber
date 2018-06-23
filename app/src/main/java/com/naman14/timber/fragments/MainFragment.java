@@ -15,24 +15,15 @@
 package com.naman14.timber.fragments;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.afollestad.appthemeengine.ATE;
-import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.R;
-import com.naman14.timber.utils.ATEUtils;
-import com.naman14.timber.utils.Helpers;
 import com.naman14.timber.utils.PreferencesUtility;
 
 import java.util.ArrayList;
