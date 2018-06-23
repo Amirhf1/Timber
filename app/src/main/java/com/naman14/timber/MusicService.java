@@ -1248,7 +1248,7 @@ public class MusicService extends Service {
         }
 
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.drawable.ic_notification_playing_music)
                 .setLargeIcon(artwork)
                 .setContentIntent(clickIntent)
                 .setContentTitle(getTrackName())

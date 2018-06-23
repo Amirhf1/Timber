@@ -142,7 +142,7 @@ public class MusicPlayer {
             } catch (final RemoteException ignored) {
             }
         }
-        return R.drawable.below_shadow;
+        return R.drawable.ic_empty_music2;
     }
 
     public static final String getArtistName() {

@@ -23,11 +23,6 @@
         </attr>
     </declare-styleable>
 
-
-    <declare-styleable name="CircularImageViewStyle">
-        <attr name="circularImageViewDefault" format="reference"/>
-    </declare-styleable>
-
     <declare-styleable name="TimelyView">
         <attr name="text_color" format="color"></attr>
     </declare-styleable>
