@@ -36,6 +36,7 @@ import com.afollestad.appthemeengine.Config;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.activities.BaseActivity;
+import com.naman14.timber.activities.NowPlayingActivity;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.utils.Helpers;
 import com.naman14.timber.utils.ImageUtils;
@@ -219,7 +220,7 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
             new SlideTrackSwitcher() {
                 @Override
                 public void onClick() {
-                    NavigationUtils.navigateToNowplaying(getActivity(), false);
+                    startActivity(NowPlayingActivity.newInstance(getContext()));
                 }
             }.attach(rootView.findViewById(R.id.root_view));
         }

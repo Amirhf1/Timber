@@ -1,6 +1,7 @@
 package com.naman14.timber.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +23,10 @@ import com.naman14.timber.utils.PreferencesUtility;
  * Created by naman on 01/01/16.
  */
 public class NowPlayingActivity extends BaseActivity implements ATEActivityThemeCustomizer, ATEToolbarCustomizer, ATEStatusBarCustomizer {
+
+    public static Intent newInstance(Context context){
+        return new Intent(context, NowPlayingActivity.class);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
