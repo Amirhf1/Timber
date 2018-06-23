@@ -31,6 +31,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.naman14.qcm.QcmImageLoader;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.activities.BaseMusicActivity;
@@ -39,12 +40,7 @@ import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.utils.ImageUtils;
 import com.naman14.timber.utils.PreferencesUtility;
 import com.naman14.timber.utils.SlideTrackSwitcher;
-import com.naman14.timber.utils.TimberUtils;
 import com.naman14.timber.widgets.PlayPauseButton;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
@@ -237,52 +233,13 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
         mTitleExpanded.setText(MusicPlayer.getTrackName());
         mArtistExpanded.setText(MusicPlayer.getArtistName());
         if (!duetoplaypause) {
-            ImageLoader.getInstance().displayImage(TimberUtils.getAlbumArtUri(MusicPlayer.getCurrentAlbumId()).toString(), mAlbumArt,
-                    new DisplayImageOptions.Builder().cacheInMemory(true)
-                            .showImageOnFail(R.drawable.ic_empty_music2)
-                            .resetViewBeforeLoading(true)
-                            .build(), new ImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                            Bitmap failedBitmap = ImageLoader.getInstance().loadImageSync("drawable://" + R.drawable.ic_empty_music2);
-                            if (getActivity() != null)
-                                new setBlurredAlbumArt().execute(failedBitmap);
-                        }
-
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                            if (getActivity() != null)
-                                new setBlurredAlbumArt().execute(loadedImage);
-
-                        }
-
-                        @Override
-                        public void onLoadingCancelled(String imageUri, View view) {
-
-                        }
-                    });
+            mAlbumArt.setImageResource(MusicPlayer.getSongImage());
+            new SetBlurredAlbumArt().execute(QcmImageLoader.loadImage(getContext(), MusicPlayer.getSongImage()));
         }
         duetoplaypause = false;
         mProgress.setMax((int) MusicPlayer.duration());
         mSeekBar.setMax((int) MusicPlayer.duration());
         mProgress.postDelayed(mUpdateProgress, 10);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
     }
 
     @Override
@@ -334,7 +291,7 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
         return new QuickControlsFragment();
     }
 
-    private class setBlurredAlbumArt extends AsyncTask<Bitmap, Void, Drawable> {
+    private class SetBlurredAlbumArt extends AsyncTask<Bitmap, Void, Drawable> {
 
         @Override
         protected Drawable doInBackground(Bitmap... loadedImage) {
