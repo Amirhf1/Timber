@@ -14,10 +14,6 @@
 
 package com.naman14.timber.models;
 
-import android.net.Uri;
-
-import com.naman14.timber.R;
-
 public class Song {
 
     private final int id;
