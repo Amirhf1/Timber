@@ -37,14 +37,14 @@ public class SongLoader {
         if(songs.isEmpty()){
             songs.addAll(
                     Arrays.asList(
-                            songFromFile(context, "Fiche 1", R.raw.fiche1)
+                            songFromFile(context, "Fiche 1", R.raw.fiche1, R.drawable.ic_empty_music2)
                     )
             );
         }
         return songs;
     }
 
-    public static Song getSongForID(Context context, long nextId) {
+    public static Song getSongForID(long nextId) {
         for (Song song : songs) {
             if(song.getId() == nextId){
                 return song;
@@ -57,14 +57,7 @@ public class SongLoader {
         return getSongsForAssets(context);
     }
 
-    /*
-    public static ArrayList<Song> getAllSongs(Context context) {
-        return getSongsForCursor(makeSongCursor(context, null, null));
-    }
-
-    */
-
-    public static Song songFromFile(Context context, String name, int rawId) {
+    public static Song songFromFile(Context context, String name, int rawId, int imageId) {
         final AssetFileDescriptor afd = context.getResources().openRawResourceFd(rawId);
 
         final MediaMetadataRetriever mmr = new MediaMetadataRetriever();
@@ -74,6 +67,7 @@ public class SongLoader {
                 rawId,
                 name,
                 rawId,
+                imageId,
                 Integer.parseInt(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION))
         );
     }

@@ -57,7 +57,6 @@ import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Audio.AlbumColumns;
 import android.provider.MediaStore.Audio.AudioColumns;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -246,7 +245,8 @@ public class MusicService extends Service {
     };
     private ContentObserver mMediaStoreObserver;
 
-    private String tackName = "test";
+    private String tackName;
+    private String artistName;
 
     @Override
     public IBinder onBind(final Intent intent) {
@@ -1441,7 +1441,7 @@ public class MusicService extends Service {
         }
     }
 
-    private boolean openRaw(String title, int rawId) {
+    private boolean openRaw(String title, String artistName, int rawId) {
         if (D) Log.d(TAG, "openFile: rawId = " + rawId);
         synchronized (this) {
             if (rawId < 0) {
@@ -1449,6 +1449,7 @@ public class MusicService extends Service {
             }
 
             this.tackName = title;
+            this.artistName = artistName;
 
             mFileToPlay = "raw"+rawId;
             mPlayer.setDataSource(rawId);
@@ -1757,7 +1758,7 @@ public class MusicService extends Service {
     }
 
     public String getArtistName() {
-        return "";
+        return artistName;
     }
 
     public String getAlbumArtistName() {
@@ -2652,8 +2653,8 @@ public class MusicService extends Service {
         }
 
         @Override
-        public void openRaw(String title, int rawId) throws RemoteException {
-            mService.get().openRaw(title, rawId);
+        public void openRaw(String title, String artistName, int rawId) throws RemoteException {
+            mService.get().openRaw(title, artistName, rawId);
         }
 
         @Override

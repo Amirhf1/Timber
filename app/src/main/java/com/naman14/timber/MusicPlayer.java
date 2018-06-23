@@ -349,7 +349,7 @@ public class MusicPlayer {
     public static final void openSong(final Song song) {
         if (mService != null) {
             try {
-                mService.openRaw(song.getTitle(), song.getRawId());
+                mService.openRaw(song.getTitle(), song.getSubTitle(), song.getRawId());
                 mService.play();
             } catch (RemoteException e) {
                 e.printStackTrace();

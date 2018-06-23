@@ -23,14 +23,15 @@ public class Song {
     private final int id;
     private final String title;
     private final int rawId;
-    private final int image = R.drawable.ic_empty_music2;
+    private final int image;
     private final int duration;
     private final String subTitle = "Fiches Plateau Moto";
 
-    public Song(int id, String title, int rawId, int duration) {
+    public Song(int id, String title, int rawId, int imageId, int duration) {
         this.id = id;
         this.title = title;
         this.rawId = rawId;
+        this.image = imageId;
         this.duration = duration;
     }
 

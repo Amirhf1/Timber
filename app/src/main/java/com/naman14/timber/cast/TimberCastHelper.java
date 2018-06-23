@@ -40,7 +40,7 @@ public class TimberCastHelper  {
         MediaMetadata musicMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK);
 
         musicMetadata.putString(MediaMetadata.KEY_TITLE, song.getTitle());
-        //musicMetadata.putString(MediaMetadata.KEY_ARTIST, song.artistName);
+        musicMetadata.putString(MediaMetadata.KEY_ARTIST, song.getSubTitle());
         //musicMetadata.putString(MediaMetadata.KEY_ALBUM_TITLE, song.albumName);
         //musicMetadata.putInt(MediaMetadata.KEY_TRACK_NUMBER, song.trackNumber);
         musicMetadata.addImage(new WebImage(Uri.parse(albumArtUrl)));

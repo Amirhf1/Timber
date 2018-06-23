@@ -51,7 +51,7 @@ public class Timber6 extends BaseNowplayingFragment {
         super.onMetaChanged();
         if (getActivity() != null) {
             long nextId = MusicPlayer.getNextAudioId();
-            Song next = SongLoader.getSongForID(getActivity(), nextId);
+            final Song next = SongLoader.getSongForID(nextId);
             if (next != null) {
                 nextSong.setText(next.getTitle());
                 nextArt.setImageResource(next.getImage());
