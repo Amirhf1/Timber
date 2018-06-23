@@ -122,27 +122,6 @@ public class MainActivity extends BaseActivity {
             panelLayout.hidePanel();
         }
 
-        if (playServicesAvailable) {
-
-            final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.BOTTOM;
-
-            /*
-            FrameLayout contentRoot = findViewById(R.id.content_root);
-            contentRoot.addView(LayoutInflater.from(this)
-                    .inflate(R.layout.fragment_cast_mini_controller, null), params);
-
-            findViewById(R.id.castMiniController).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(MainActivity.this, ExpandedControllerActivity.class));
-                }
-            });
-            */
-        }
-
     }
 
     private void loadEverything() {
