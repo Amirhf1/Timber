@@ -16,8 +16,6 @@ package com.naman14.timber;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.naman14.timber.utils.PreferencesUtility;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -26,8 +24,6 @@ import com.nostra13.universalimageloader.utils.L;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import io.fabric.sdk.android.Fabric;
 
 public class TimberApp extends MultiDexApplication {
 
@@ -41,11 +37,6 @@ public class TimberApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
-        //disable crashlytics for debug builds
-        Fabric.with(this, new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build());
 
         ImageLoaderConfiguration localImageLoaderConfiguration = new ImageLoaderConfiguration.Builder(this).imageDownloader(new BaseImageDownloader(this) {
             PreferencesUtility prefs = PreferencesUtility.getInstance(TimberApp.this);
