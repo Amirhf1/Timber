@@ -53,7 +53,6 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.1'
 
     implementation "com.android.support:mediarouter-v7:$rootProject.supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-cast-framework:11.6.0'
 
     implementation 'net.steamcrafted:materialiconlib:1.1.4'
     implementation 'de.Maxr1998:track-selector-lib:1.2'
