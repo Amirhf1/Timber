@@ -35,8 +35,10 @@ import com.naman14.qcm.QcmImageLoader;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.activities.BaseMusicActivity;
+import com.naman14.timber.activities.NowPlayingMusicActivity;
 import com.naman14.timber.listeners.MusicStateListener;
 import com.naman14.timber.utils.ImageUtils;
+import com.naman14.timber.utils.SlideTrackSwitcher;
 import com.naman14.timber.widgets.PlayPauseButton;
 
 public class QuickControlsFragment extends Fragment implements MusicStateListener {
@@ -54,29 +56,6 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
     private View playPauseWrapper, playPauseWrapperExpanded;
     private View previous, next;
     private boolean duetoplaypause = false;
-    private boolean fragmentPaused = false;
-
-    public Runnable mUpdateProgress = new Runnable() {
-
-        @Override
-        public void run() {
-
-            long position = MusicPlayer.position();
-            mProgress.setProgress((int) position);
-            mSeekBar.setProgress((int) position);
-
-            overflowcounter--;
-            if (MusicPlayer.isPlaying()) {
-                int delay = (int) (1500 - (position % 1000));
-                if (overflowcounter < 0 && !fragmentPaused) {
-                    overflowcounter++;
-                    mProgress.postDelayed(mUpdateProgress, delay);
-                }
-            } else mProgress.removeCallbacks(this);
-
-        }
-    };
-
     private final View.OnClickListener mPlayPauseListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -98,7 +77,6 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
 
         }
     };
-
     private final View.OnClickListener mPlayPauseExpandedListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -120,6 +98,31 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
 
         }
     };
+    private boolean fragmentPaused = false;
+    public Runnable mUpdateProgress = new Runnable() {
+
+        @Override
+        public void run() {
+
+            long position = MusicPlayer.position();
+            mProgress.setProgress((int) position);
+            mSeekBar.setProgress((int) position);
+
+            overflowcounter--;
+            if (MusicPlayer.isPlaying()) {
+                int delay = (int) (1500 - (position % 1000));
+                if (overflowcounter < 0 && !fragmentPaused) {
+                    overflowcounter++;
+                    mProgress.postDelayed(mUpdateProgress, delay);
+                }
+            } else mProgress.removeCallbacks(this);
+
+        }
+    };
+
+    public static Fragment newInstance() {
+        return new QuickControlsFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -203,16 +206,12 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
 
         ((BaseMusicActivity) getActivity()).setMusicStateListenerListener(this);
 
-        /*
-        if (PreferencesUtility.getInstance(getActivity()).isGesturesEnabled()) {
-            new SlideTrackSwitcher() {
-                @Override
-                public void onClick() {
-                    startActivity(NowPlayingMusicActivity.newInstance(getContext()));
-                }
-            }.attach(rootView.findViewById(R.id.root_view));
-        }
-        */
+        new SlideTrackSwitcher() {
+            @Override
+            public void onClick() {
+                startActivity(NowPlayingMusicActivity.newInstance(getContext()));
+            }
+        }.attach(rootView.findViewById(R.id.root_view));
 
         return rootView;
     }
@@ -281,10 +280,6 @@ public class QuickControlsFragment extends Fragment implements MusicStateListene
     public void onMetaChanged() {
         updateNowplayingCard();
         updateState();
-    }
-
-    public static Fragment newInstance() {
-        return new QuickControlsFragment();
     }
 
     private class SetBlurredAlbumArt extends AsyncTask<Bitmap, Void, Drawable> {

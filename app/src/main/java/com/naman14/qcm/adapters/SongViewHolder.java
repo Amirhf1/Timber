@@ -54,9 +54,9 @@ public class SongViewHolder extends RecyclerView.ViewHolder {
         albumArt.setImageResource(localItem.getImage());
 
         if (MusicPlayer.getCurrentAudioId() == localItem.getId()) {
-            title.setTextColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
+            title.setTextColor(itemView.getContext().getResources().getColor(R.color.colorCurrentSong));
             if (MusicPlayer.isPlaying()) {
-                visualizer.setColor(itemView.getContext().getResources().getColor(R.color.colorAccent));
+                visualizer.setColor(itemView.getContext().getResources().getColor(R.color.colorCurrentSong));
                 visualizer.setVisibility(View.VISIBLE);
             } else {
                 visualizer.setVisibility(View.GONE);
