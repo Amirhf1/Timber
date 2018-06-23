@@ -23,9 +23,6 @@ import com.naman14.timber.models.Song;
 
 public class Timber6 extends BaseNowplayingFragment {
 
-    TextView nextSong;
-    ImageView nextArt;
-
     public static Fragment newInstance(){
         return new Timber6();
     }
@@ -42,24 +39,6 @@ public class Timber6 extends BaseNowplayingFragment {
         ((SeekBar) rootView.findViewById(R.id.song_progress)).getProgressDrawable().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY));
         ((SeekBar) rootView.findViewById(R.id.song_progress)).getThumb().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP));
 
-        nextSong = (TextView) rootView.findViewById(R.id.title_next);
-        nextArt = (ImageView) rootView.findViewById(R.id.album_art_next);
-
-        rootView.findViewById(R.id.nextView).setVisibility(View.GONE);
-
         return rootView;
-    }
-
-    @Override
-    public void onMetaChanged() {
-        super.onMetaChanged();
-        if (getActivity() != null) {
-            long nextId = MusicPlayer.getNextAudioId();
-            final Song next = SongLoader.getSongForID(nextId);
-            if (next != null) {
-                nextSong.setText(next.getTitle());
-                nextArt.setImageResource(next.getImage());
-            }
-        }
     }
 }
