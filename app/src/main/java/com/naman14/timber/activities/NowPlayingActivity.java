@@ -23,7 +23,7 @@ import com.naman14.timber.utils.PreferencesUtility;
 /**
  * Created by naman on 01/01/16.
  */
-public class NowPlayingActivity extends BaseActivity implements ATEActivityThemeCustomizer, ATEToolbarCustomizer, ATEStatusBarCustomizer {
+public class NowPlayingActivity extends BaseActivity {
 
     public static Intent newInstance(Context context){
         return new Intent(context, NowPlayingActivity.class);
@@ -38,31 +38,5 @@ public class NowPlayingActivity extends BaseActivity implements ATEActivityTheme
                 .replace(R.id.container, new Timber6())
                 .commit();
 
-    }
-
-    @StyleRes
-    @Override
-    public int getActivityTheme() {
-        return R.style.AppTheme_FullScreen_Light;
-    }
-
-    @Override
-    public int getLightToolbarMode() {
-        return Config.LIGHT_TOOLBAR_AUTO;
-    }
-
-    @Override
-    public int getLightStatusBarMode() {
-        return Config.LIGHT_STATUS_BAR_OFF;
-    }
-
-    @Override
-    public int getToolbarColor() {
-        return Color.TRANSPARENT;
-    }
-
-    @Override
-    public int getStatusBarColor() {
-        return Color.TRANSPARENT;
     }
 }

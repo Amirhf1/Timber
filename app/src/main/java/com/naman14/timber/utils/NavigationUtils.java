@@ -14,14 +14,10 @@
 
 package com.naman14.timber.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 
 import com.naman14.timber.activities.MainActivity;
-import com.naman14.timber.activities.NowPlayingActivity;
-import com.naman14.timber.nowplaying.Timber6;
 
 public class NavigationUtils {
 
@@ -29,10 +25,6 @@ public class NavigationUtils {
         final Intent intent = new Intent(context, MainActivity.class);
         intent.setAction(Constants.NAVIGATE_NOWPLAYING);
         return intent;
-    }
-
-    public static Fragment getFragmentForNowplayingID() {
-        return ;
     }
 
 }
