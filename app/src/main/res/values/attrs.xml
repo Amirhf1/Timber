@@ -28,10 +28,6 @@
         <attr name="circularImageViewDefault" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="PlayTransition">
-        <attr name="colorCT" format="color"/>
-    </declare-styleable>
-
     <declare-styleable name="TimelyView">
         <attr name="text_color" format="color"></attr>
     </declare-styleable>
