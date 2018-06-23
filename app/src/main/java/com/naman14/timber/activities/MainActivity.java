@@ -31,7 +31,7 @@ public class MainActivity extends BaseMusicActivity {
 
     private void navigateLibrary() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new MainFragment())
+                .replace(R.id.fragment_container, MainFragment.newInstance())
                 .commitAllowingStateLoss();
     }
 

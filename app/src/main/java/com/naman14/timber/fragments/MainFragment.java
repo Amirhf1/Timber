@@ -31,12 +31,8 @@ import java.util.List;
 
 public class MainFragment extends Fragment {
 
-    private PreferencesUtility mPreferences;
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPreferences = PreferencesUtility.getInstance(getActivity());
+    public static MainFragment newInstance() {
+        return new MainFragment();
     }
 
     @Override
