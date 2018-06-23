@@ -35,7 +35,6 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
@@ -66,6 +65,7 @@ import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.naman14.qcm.QcmImageLoader;
 import com.naman14.timber.activities.MainMusicActivity;
 import com.naman14.timber.helpers.MediaButtonIntentReceiver;
 import com.naman14.timber.helpers.MusicPlaybackTrack;
@@ -1143,7 +1143,7 @@ public class MusicService extends Service {
             if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
                 Bitmap albumArt = null;
                 if (mShowAlbumArtOnLockscreen) {
-                    albumArt = BitmapFactory.decodeResource(getResources(), getSongImage());
+                    albumArt = QcmImageLoader.loadImage(getApplicationContext(), getSongImage());
                     if (albumArt != null) {
 
                         Bitmap.Config config = albumArt.getConfig();
@@ -1188,7 +1188,7 @@ public class MusicService extends Service {
         } else if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
             Bitmap albumArt = null;
             if (mShowAlbumArtOnLockscreen) {
-                albumArt = BitmapFactory.decodeResource(getResources(), getSongImage());
+                albumArt = QcmImageLoader.loadImage(getApplicationContext(), getSongImage());
                 if (albumArt != null) {
 
                     Bitmap.Config config = albumArt.getConfig();
@@ -1247,11 +1247,7 @@ public class MusicService extends Service {
         final Intent nowPlayingIntent = new Intent(this, MainMusicActivity.class)
                 .setAction(Constants.NAVIGATE_NOWPLAYING);
         PendingIntent clickIntent = PendingIntent.getActivity(this, 0, nowPlayingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Bitmap artwork = BitmapFactory.decodeResource(getResources(), songImage);
-
-        if (artwork == null) {
-            BitmapFactory.decodeResource(getResources(), R.drawable.ic_empty_music2);
-        }
+        Bitmap artwork = QcmImageLoader.loadImage(getApplicationContext(), songImage);
 
         if (mNotificationPostTime == 0) {
             mNotificationPostTime = System.currentTimeMillis();
