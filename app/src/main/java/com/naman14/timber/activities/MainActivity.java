@@ -18,22 +18,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
-import com.afollestad.appthemeengine.customizers.ATEActivityThemeCustomizer;
-import com.google.android.gms.cast.framework.media.widget.ExpandedControllerActivity;
 import com.naman14.timber.MusicPlayer;
 import com.naman14.timber.R;
 import com.naman14.timber.fragments.MainFragment;
@@ -41,7 +29,6 @@ import com.naman14.timber.permissions.Nammu;
 import com.naman14.timber.permissions.PermissionCallback;
 import com.naman14.timber.slidinguppanel.SlidingUpPanelLayout;
 import com.naman14.timber.utils.Constants;
-import com.naman14.timber.utils.TimberUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,14 +46,6 @@ public class MainActivity extends BaseActivity {
                     .commitAllowingStateLoss();
         }
     };
-
-    private Runnable navigateNowplaying = new Runnable() {
-        public void run() {
-            navigateLibrary.run();
-            startActivity(new Intent(MainActivity.this, NowPlayingActivity.class));
-        }
-    };
-
     private final PermissionCallback permissionReadstorageCallback = new PermissionCallback() {
         @Override
         public void permissionGranted() {
@@ -78,7 +57,12 @@ public class MainActivity extends BaseActivity {
             finish();
         }
     };
-
+    private Runnable navigateNowplaying = new Runnable() {
+        public void run() {
+            navigateLibrary.run();
+            startActivity(new Intent(MainActivity.this, NowPlayingActivity.class));
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,17 +79,11 @@ public class MainActivity extends BaseActivity {
 
         setPanelSlideListeners(panelLayout);
 
-
-        if (TimberUtils.isMarshmallow()) {
-            checkPermissionAndThenLoad();
-            //checkWritePermissions();
-        } else {
-            loadEverything();
-        }
+        loadEverything();
 
         addBackstackListener();
 
-        if(Intent.ACTION_VIEW.equals(action)) {
+        if (Intent.ACTION_VIEW.equals(action)) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -118,7 +96,7 @@ public class MainActivity extends BaseActivity {
             }, 350);
         }
 
-        if (!panelLayout.isPanelHidden() && MusicPlayer.getTrackName() == null ) {
+        if (!panelLayout.isPanelHidden() && MusicPlayer.getTrackName() == null) {
             panelLayout.hidePanel();
         }
 
